@@ -1,0 +1,135 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{{ name }} — портфолио</title>
+    <meta name="description" content="{{ tagline }}" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,600;0,9..40,700;1,9..40,400&family=JetBrains+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="{% static 'portfolio/css/home.css' %}" />
+  </head>
+  <body>
+    <div class="bg-mesh" aria-hidden="true"></div>
+
+    <header class="site-header">
+      <div class="wrap inner">
+        <a class="logo" href="{% url 'home' %}">portfolio</a>
+        <nav class="nav" aria-label="Основная навигация">
+          <a href="#about">Обо мне</a>
+          <a href="#stack">Стек</a>
+          <a href="#projects">Проекты</a>
+          <a href="#contact">Контакты</a>
+        </nav>
+      </div>
+    </header>
+
+    <main>
+      <section class="hero" aria-labelledby="hero-title">
+        <div class="wrap hero-grid">
+          <div>
+            <p class="eyebrow">Добро пожаловать</p>
+            <h1 id="hero-title">{{ name }}</h1>
+            <p class="lead">{{ tagline }}</p>
+            <p class="lead" style="margin-top: -0.75rem; font-size: 1rem">{{ role }}</p>
+            <div class="actions">
+              <a class="btn btn-primary" href="#contact">Связаться</a>
+              <a class="btn btn-ghost" href="#projects">Смотреть работы</a>
+            </div>
+          </div>
+          <aside class="hero-card" aria-label="Пример кода">
+            <pre class="code-block"><span class="cm"># hello.py</span>
+<span class="kw">def</span> focus():
+    <span class="kw">return</span> {
+        <span class="str">"stack"</span>: [<span class="str">"Django"</span>, <span class="str">"DRF"</span>, <span class="str">"PostgreSQL"</span>],
+        <span class="str">"goal"</span>: <span class="str">"Чистый API и предсказуемые данные"</span>,
+    }</pre>
+          </aside>
+        </div>
+      </section>
+
+      <section id="about" aria-labelledby="about-title">
+        <div class="wrap">
+          <h2 id="about-title">Обо мне</h2>
+          <p class="section-lead">
+            Здесь будет краткое описание: чем занимаетесь, что важно в работе, какие задачи
+            решаете. Текст можно заменить в шаблоне или позже подтянуть из базы или CMS.
+          </p>
+        </div>
+      </section>
+
+      <section id="stack" aria-labelledby="stack-title">
+        <div class="wrap">
+          <h2 id="stack-title">Стек</h2>
+          <p class="section-lead">
+            Ниже — опорные технологии текущего проекта. Блок легко расширить под ваш реальный
+            набор инструментов.
+          </p>
+          <div class="grid-3">
+            <article class="card">
+              <h3>Django + DRF</h3>
+              <p>Бэкенд и REST API: модели, сериализаторы, права доступа.</p>
+            </article>
+            <article class="card">
+              <h3>PostgreSQL</h3>
+              <p>Надёжное хранение данных, в т.ч. через Supabase.</p>
+            </article>
+            <article class="card">
+              <h3>Интеграции</h3>
+              <p>Cloudinary для медиа, SendGrid для писем, GitHub API для проектов.</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section id="projects" aria-labelledby="projects-title">
+        <div class="wrap">
+          <h2 id="projects-title">Проекты</h2>
+          <p class="section-lead">
+            Карточки-заглушки: подключите репозитории или API позже, чтобы список обновлялся
+            автоматически.
+          </p>
+          <div class="projects">
+            <article class="project">
+              <h3>Название проекта</h3>
+              <p>Короткое описание задачи и вашей роли в проекте.</p>
+            </article>
+            <article class="project">
+              <h3>Ещё один проект</h3>
+              <p>Стек, ссылка на демо и исходники появятся здесь.</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section id="contact" aria-labelledby="contact-title">
+        <div class="wrap">
+          <h2 id="contact-title">Контакты</h2>
+          <p class="section-lead">
+            Напишите на почту или в мессенджер — замените ссылки на свои. Форму обратной связи
+            можно добавить отдельным шагом через SendGrid.
+          </p>
+          <div class="actions">
+            <a class="btn btn-primary" href="mailto:hello@example.com">hello@example.com</a>
+            <a class="btn btn-ghost" href="https://github.com/" rel="noopener noreferrer">GitHub</a>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="wrap">
+        <span>© {% now "Y" %} {{ name }}. Сделано на Django.</span>
+        <div class="footer-links">
+          <a href="{% url 'home' %}">Наверх</a>
+          <a href="/admin/">Админка</a>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>
