@@ -14,7 +14,7 @@ from portfolio.models import (
     StackGroup,
     get_or_create_site_profile,
 )
-from portfolio.services.github import iter_portfolio_repos, repos_to_card_dicts
+from portfolio.services.github import load_repos_for_portfolio, repos_to_card_dicts
 
 logger = logging.getLogger(__name__)
 
@@ -38,19 +38,19 @@ def _load_github_project_cards():
     if not username:
         return []
 
-    cache_key = f"portfolio:github_cards:{username}"
+    allowlist = getattr(django_settings, "GITHUB_REPO_ALLOWLIST", []) or []
+    cache_key = f"portfolio:github_cards:{username}:{','.join(allowlist)}"
     cached = cache.get(cache_key)
     if cached is not None:
         return list(cached)
 
-    repos = list(
-        iter_portfolio_repos(
-            username,
-            token=(django_settings.GITHUB_TOKEN or None) or None,
-            limit=django_settings.GITHUB_REPOS_LIMIT,
-            exclude_forks=django_settings.GITHUB_EXCLUDE_FORKS,
-            exclude_private=django_settings.GITHUB_EXCLUDE_PRIVATE,
-        )
+    repos = load_repos_for_portfolio(
+        username,
+        token=(django_settings.GITHUB_TOKEN or None) or None,
+        limit=django_settings.GITHUB_REPOS_LIMIT,
+        exclude_forks=django_settings.GITHUB_EXCLUDE_FORKS,
+        exclude_private=django_settings.GITHUB_EXCLUDE_PRIVATE,
+        allowlist=allowlist,
     )
     cards = repos_to_card_dicts(repos)
     cache.set(cache_key, cards, django_settings.GITHUB_CACHE_TTL)
@@ -91,6 +91,9 @@ def home(request):
             "portfolio_projects": portfolio_projects,
             "projects_from_github": projects_from_github,
             "github_cache_ttl_minutes": max(1, django_settings.GITHUB_CACHE_TTL // 60),
+            "github_curated": bool(
+                getattr(django_settings, "GITHUB_REPO_ALLOWLIST", []) or []
+            ),
             "logo_text": logo_text,
         },
     )
@@ -111,14 +114,16 @@ def github_projects(_request):
         )
 
     token = django_settings.GITHUB_TOKEN or None
+    allowlist = getattr(django_settings, "GITHUB_REPO_ALLOWLIST", []) or []
     repos = [
         asdict(r)
-        for r in iter_portfolio_repos(
+        for r in load_repos_for_portfolio(
             username,
             token=token,
             limit=django_settings.GITHUB_REPOS_LIMIT,
             exclude_forks=django_settings.GITHUB_EXCLUDE_FORKS,
             exclude_private=django_settings.GITHUB_EXCLUDE_PRIVATE,
+            allowlist=allowlist,
         )
     ]
     return Response(repos)

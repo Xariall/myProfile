@@ -230,22 +230,50 @@ h1 {
   font-family: var(--font-mono);
   font-size: 0.78rem;
   line-height: 1.65;
-  color: #b8c9d9;
+  color: #cbd5e1;
   margin: 0;
   white-space: pre-wrap;
   word-break: break-word;
 }
 
+/* Подсветка токенов (дефолтный сниппет в шаблоне) */
 .code-block .kw {
-  color: #7fdcc5;
+  color: #5eead4;
+  font-weight: 500;
 }
 
 .code-block .str {
-  color: #9ab8ff;
+  color: #93c5fd;
 }
 
 .code-block .cm {
-  color: #5a6b7d;
+  color: #64748b;
+}
+
+.code-block .fn {
+  color: #fcd34d;
+}
+
+.code-block .name {
+  color: #a5d6ff;
+}
+
+.code-block .op {
+  color: #94a3b8;
+}
+
+.code-block .builtin {
+  color: #c4b5fd;
+}
+
+.code-block .num {
+  color: #fb923c;
+}
+
+/* Текст из админки — без HTML, ровная читаемая моноширина */
+.code-block--plain {
+  color: #b8c5d1;
+  letter-spacing: 0.01em;
 }
 
 section {
@@ -326,6 +354,64 @@ section h2 {
   margin: 0;
   font-size: 0.9rem;
   color: var(--muted);
+}
+
+/* GitHub: компактные карточки, без лишней высоты */
+.projects--github {
+  gap: 0.65rem;
+}
+
+@media (min-width: 640px) {
+  .projects--github {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 960px) {
+  .projects--github {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+.projects--github .project {
+  padding: 0.85rem 1rem;
+  border-style: solid;
+  border-color: rgba(120, 160, 200, 0.14);
+}
+
+.projects--github .project h3 {
+  font-size: 0.98rem;
+  margin: 0 0 0.3rem;
+  line-height: 1.25;
+}
+
+.projects--github .project-desc {
+  font-size: 0.82rem;
+  line-height: 1.45;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+}
+
+.projects--github .project-tags {
+  font-size: 0.72rem;
+  margin-top: 0.35rem !important;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.projects--github .project-actions {
+  margin-top: 0.55rem;
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.projects--github .project-actions a {
+  font-size: 0.82rem;
+  font-weight: 600;
 }
 
 .site-footer {

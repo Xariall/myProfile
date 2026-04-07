@@ -178,10 +178,7 @@ def get_or_create_site_profile():
         "hero_name": "Имя Фамилия",
         "hero_tagline": "Собираю надёжные бэкенды и понятные интерфейсы к данным.",
         "hero_role": "Python · Django · API",
-        "code_block": (
-            '# hello.py\ndef focus():\n    return {\n        "stack": ["Django", "DRF", "PostgreSQL"],\n'
-            '        "goal": "Чистый API и предсказуемые данные",\n    }'
-        ),
+        "code_block": "",
         "about_title": "Обо мне",
         "about_lead": (
             "Кратко опишите, чем занимаетесь и какие задачи решаете — текст можно править в админке."

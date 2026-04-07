@@ -150,3 +150,8 @@ GITHUB_REPOS_LIMIT = env.int("GITHUB_REPOS_LIMIT", default=12)
 GITHUB_CACHE_TTL = env.int("GITHUB_CACHE_TTL", default=300)
 GITHUB_EXCLUDE_FORKS = env.bool("GITHUB_EXCLUDE_FORKS", default=True)
 GITHUB_EXCLUDE_PRIVATE = env.bool("GITHUB_EXCLUDE_PRIVATE", default=True)
+# Список имён репозиториев через запятую (без owner). Если задан — на главной только они, в этом порядке.
+_raw_allow = env("GITHUB_REPO_ALLOWLIST", default="")
+GITHUB_REPO_ALLOWLIST = [
+    x.strip() for x in _raw_allow.split(",") if x.strip()
+]

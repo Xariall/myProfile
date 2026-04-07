@@ -56,12 +56,8 @@
             </div>
           </div>
           <aside class="hero-card" aria-label="Пример кода">
-            <pre class="code-block">{% if profile.code_block %}{{ profile.code_block|escape }}{% else %}# hello.py
-<span class="kw">def</span> focus():
-    <span class="kw">return</span> {
-        <span class="str">"stack"</span>: [<span class="str">"Django"</span>, <span class="str">"DRF"</span>, <span class="str">"PostgreSQL"</span>],
-        <span class="str">"goal"</span>: <span class="str">"Чистый API и предсказуемые данные"</span>,
-    }{% endif %}</pre>
+            <pre class="code-block{% if profile.code_block %} code-block--plain{% endif %}">{% if profile.code_block %}{{ profile.code_block|escape }}{% else %}<span class="cm"># start small</span>
+<span class="name">steady</span> <span class="op">=</span> <span class="builtin">True</span>{% endif %}</pre>
           </aside>
         </div>
       </section>
@@ -138,15 +134,15 @@
               Репозитории с GitHub · кеш обновляется примерно раз в {{ github_cache_ttl_minutes }} мин.
             </p>
           {% endif %}
-          <div class="projects">
+          <div class="projects{% if projects_from_github %} projects--github{% endif %}">
             {% for project in portfolio_projects %}
               <article class="project" data-category="{% if projects_from_github %}github{% else %}{{ project.category }}{% endif %}">
                 <h3>{{ project.title }}</h3>
-                {% if project.description %}<p>{{ project.description }}</p>{% endif %}
+                {% if project.description %}<p class="project-desc">{{ project.description }}</p>{% endif %}
                 {% if project.tags %}
-                  <p style="font-size: 0.8rem; margin-top: 0.5rem; color: var(--muted)">{{ project.tags }}</p>
+                  <p class="project-tags">{{ project.tags }}</p>
                 {% endif %}
-                <div style="margin-top: 0.75rem; display: flex; gap: 1rem; flex-wrap: wrap">
+                <div class="project-actions">
                   {% if project.github_url %}
                     <a href="{{ project.github_url }}" rel="noopener noreferrer">GitHub</a>
                   {% endif %}
@@ -158,7 +154,11 @@
             {% empty %}
               <p class="section-lead">
                 {% if projects_from_github %}
-                  Публичных репозиториев не найдено (или все отфильтрованы). Проверьте логин и настройки в .env.
+                  {% if github_curated %}
+                    Не удалось показать ни один репозиторий из списка. Проверьте имена в <code>GITHUB_REPO_ALLOWLIST</code> и права токена.
+                  {% else %}
+                    Публичных репозиториев не найдено (или все отфильтрованы). Проверьте логин в .env.
+                  {% endif %}
                 {% else %}
                   Добавьте проекты в админке или задайте GITHUB_USERNAME для подгрузки с GitHub.
                 {% endif %}

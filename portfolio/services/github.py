@@ -2,11 +2,14 @@
 
 from __future__ import annotations
 
+import logging
 from dataclasses import dataclass
 from itertools import islice
 from typing import Any, Iterable
 
-from github import Auth, Github
+from github import Auth, Github, GithubException
+
+logger = logging.getLogger(__name__)
 
 
 @dataclass(frozen=True)
@@ -50,21 +53,95 @@ def iter_portfolio_repos(
         )
 
 
+def fetch_repos_by_names(
+    username: str,
+    names: list[str],
+    *,
+    token: str | None = None,
+    exclude_forks: bool = True,
+    exclude_private: bool = True,
+) -> list[RepoSummary]:
+    """Подтягивает репозитории по точным именам, порядок как в списке."""
+    if not names:
+        return []
+
+    if token:
+        g = Github(auth=Auth.Token(token))
+    else:
+        g = Github()
+
+    out: list[RepoSummary] = []
+    for raw in names:
+        name = raw.strip()
+        if not name:
+            continue
+        full = f"{username}/{name}"
+        try:
+            repo = g.get_repo(full)
+        except GithubException as e:
+            logger.warning("GitHub: репозиторий %s недоступен: %s", full, e)
+            continue
+        if exclude_forks and repo.fork:
+            logger.warning("GitHub: %s пропущен (fork)", full)
+            continue
+        if exclude_private and getattr(repo, "private", False):
+            logger.warning("GitHub: %s пропущен (private)", full)
+            continue
+        raw_home = getattr(repo, "homepage", "") or ""
+        homepage = raw_home.strip() or None
+        out.append(
+            RepoSummary(
+                name=repo.name,
+                description=repo.description,
+                html_url=repo.html_url,
+                homepage=homepage,
+                stargazers_count=repo.stargazers_count,
+                language=repo.language,
+            )
+        )
+    return out
+
+
+def load_repos_for_portfolio(
+    username: str,
+    *,
+    token: str | None,
+    limit: int,
+    exclude_forks: bool,
+    exclude_private: bool,
+    allowlist: list[str],
+) -> list[RepoSummary]:
+    """С allowlist — только выбранные репозитории; без — список по обновлению (как раньше)."""
+    if allowlist:
+        return fetch_repos_by_names(
+            username,
+            allowlist,
+            token=token,
+            exclude_forks=exclude_forks,
+            exclude_private=exclude_private,
+        )
+    return list(
+        iter_portfolio_repos(
+            username,
+            token=token,
+            limit=limit,
+            exclude_forks=exclude_forks,
+            exclude_private=exclude_private,
+        )
+    )
+
+
 def repos_to_card_dicts(repos: Iterable[RepoSummary]) -> list[dict[str, Any]]:
-    """Унифицированная структура для шаблона главной (как у модели Project)."""
+    """Карточки для шаблона главной (без звёзд; язык — опционально)."""
     cards: list[dict[str, Any]] = []
     for r in repos:
-        tag_parts = []
-        if r.language:
-            tag_parts.append(r.language)
-        tag_parts.append(f"★ {r.stargazers_count}")
         cards.append(
             {
                 "title": r.name,
                 "description": r.description or "",
                 "github_url": r.html_url,
                 "live_url": r.homepage or "",
-                "tags": " · ".join(tag_parts),
+                "tags": (r.language or "").strip(),
             }
         )
     return cards
