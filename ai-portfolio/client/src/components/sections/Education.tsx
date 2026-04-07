@@ -6,6 +6,7 @@
 
 import { useRef, useEffect } from "react";
 import { GraduationCap, Award, Calendar } from "lucide-react";
+import { usePortfolioData } from "@/hooks/usePortfolioData";
 
 type EducationItem = {
   degree: string;
@@ -24,70 +25,10 @@ type CertItem = {
   badge?: string;
 };
 
-const EDUCATION: EducationItem[] = [
-  {
-    degree: "M.Sc.",
-    field: "Artificial Intelligence / Computer Science",
-    institution: "University Name",
-    period: "20XX – 20XX",
-    gpa: "X.X / 4.0",
-    thesis: "Thesis: [Title of your thesis on a relevant AI topic]",
-  },
-  {
-    degree: "B.Sc.",
-    field: "Computer Science / Mathematics",
-    institution: "University Name",
-    period: "20XX – 20XX",
-    gpa: "X.X / 4.0",
-  },
-];
-
-const CERTIFICATIONS: CertItem[] = [
-  {
-    name: "Deep Learning Specialization",
-    issuer: "Coursera / DeepLearning.AI",
-    date: "20XX",
-    credentialId: "XXXX-XXXX",
-    badge: "🧠",
-  },
-  {
-    name: "AWS Certified Machine Learning – Specialty",
-    issuer: "Amazon Web Services",
-    date: "20XX",
-    credentialId: "XXXX-XXXX",
-    badge: "☁️",
-  },
-  {
-    name: "TensorFlow Developer Certificate",
-    issuer: "Google",
-    date: "20XX",
-    credentialId: "XXXX-XXXX",
-    badge: "⚡",
-  },
-  {
-    name: "Professional Data Engineer",
-    issuer: "Google Cloud",
-    date: "20XX",
-    credentialId: "XXXX-XXXX",
-    badge: "🔧",
-  },
-  {
-    name: "MLOps Specialization",
-    issuer: "Coursera / DeepLearning.AI",
-    date: "20XX",
-    credentialId: "XXXX-XXXX",
-    badge: "🚀",
-  },
-  {
-    name: "Reinforcement Learning Specialization",
-    issuer: "Coursera / University of Alberta",
-    date: "20XX",
-    credentialId: "XXXX-XXXX",
-    badge: "🎯",
-  },
-];
-
-export default function Education() {
+export default function EducationSection() {
+  const data = usePortfolioData();
+  const education: EducationItem[] = data.education?.length ? data.education : [];
+  const certifications: CertItem[] = data.certifications?.length ? data.certifications : [];
   const sectionRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
@@ -141,7 +82,7 @@ export default function Education() {
             </div>
 
             <div className="space-y-5">
-              {EDUCATION.map((edu, i) => (
+              {education.map((edu, i) => (
                 <div
                   key={i}
                   className="reveal card-hover p-6 rounded-sm"
@@ -214,7 +155,7 @@ export default function Education() {
             </div>
 
             <div className="space-y-3">
-              {CERTIFICATIONS.map((cert, i) => (
+              {certifications.map((cert, i) => (
                 <div
                   key={i}
                   className="reveal card-hover flex items-center gap-4 p-4 rounded-sm"

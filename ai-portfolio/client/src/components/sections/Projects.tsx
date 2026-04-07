@@ -4,8 +4,9 @@
  * Section counter "03 / Projects"
  */
 
-import { useRef, useEffect, useState } from "react";
+import { useRef, useEffect, useState, useMemo } from "react";
 import { ExternalLink, Github, Star } from "lucide-react";
+import { usePortfolioData } from "@/hooks/usePortfolioData";
 
 const CARD_BG = "https://d2xsxph8kpxj0f.cloudfront.net/310519663524070095/fRirMRHo2JX8PN7S366szy/project-card-bg-UcNzAKVdr7ZtoK9XuEaCDB.webp";
 
@@ -19,71 +20,9 @@ type Project = {
   featured?: boolean;
   stars?: string;
   status: "Production" | "Research" | "Open Source" | "WIP";
+  github_url?: string;
+  live_url?: string;
 };
-
-const PROJECTS: Project[] = [
-  {
-    id: "p1",
-    title: "Project Alpha",
-    description: "A large-scale NLP pipeline for real-time document understanding and summarization.",
-    longDescription: "End-to-end system leveraging transformer-based models for document ingestion, semantic chunking, and abstractive summarization at production scale.",
-    tags: ["PyTorch", "HuggingFace", "FastAPI", "Redis", "Docker"],
-    category: "NLP",
-    featured: true,
-    stars: "1.2k",
-    status: "Production",
-  },
-  {
-    id: "p2",
-    title: "Project Beta",
-    description: "Multi-modal vision-language model fine-tuned for domain-specific image captioning.",
-    longDescription: "Custom fine-tuning pipeline for vision-language models on specialized datasets, with evaluation harness and deployment on cloud infrastructure.",
-    tags: ["PyTorch", "CLIP", "BLIP-2", "AWS SageMaker", "MLflow"],
-    category: "Computer Vision",
-    featured: true,
-    stars: "840",
-    status: "Research",
-  },
-  {
-    id: "p3",
-    title: "Project Gamma",
-    description: "Reinforcement learning agent for autonomous decision-making in dynamic environments.",
-    longDescription: "PPO-based RL agent trained in custom simulation environments with reward shaping, curriculum learning, and policy distillation techniques.",
-    tags: ["PyTorch", "Gymnasium", "Ray RLlib", "W&B", "Python"],
-    category: "Reinforcement Learning",
-    status: "Research",
-  },
-  {
-    id: "p4",
-    title: "Project Delta",
-    description: "MLOps platform for automated model training, evaluation, and deployment workflows.",
-    longDescription: "Internal tooling for managing the full ML lifecycle: experiment tracking, model registry, A/B testing infrastructure, and automated retraining triggers.",
-    tags: ["MLflow", "Kubernetes", "Airflow", "PostgreSQL", "Grafana"],
-    category: "MLOps",
-    status: "Production",
-  },
-  {
-    id: "p5",
-    title: "Project Epsilon",
-    description: "Open-source library for efficient data augmentation in low-resource NLP tasks.",
-    longDescription: "A Python library providing modular, composable text augmentation strategies optimized for low-resource and multilingual NLP scenarios.",
-    tags: ["Python", "spaCy", "NLTK", "pytest", "PyPI"],
-    category: "Open Source",
-    stars: "320",
-    status: "Open Source",
-  },
-  {
-    id: "p6",
-    title: "Project Zeta",
-    description: "LLM-powered code review assistant integrated into CI/CD pipelines.",
-    longDescription: "Automated code review tool using fine-tuned LLMs to detect bugs, suggest improvements, and enforce coding standards within GitHub Actions workflows.",
-    tags: ["LangChain", "OpenAI API", "GitHub Actions", "FastAPI", "React"],
-    category: "LLMs",
-    status: "WIP",
-  },
-];
-
-const CATEGORIES = ["All", "NLP", "Computer Vision", "Reinforcement Learning", "MLOps", "Open Source", "LLMs"];
 
 const STATUS_COLORS: Record<string, string> = {
   Production: "rgba(16, 185, 129, 0.15)",
@@ -212,22 +151,30 @@ function ProjectCard({ project }: { project: Project }) {
             <span />
           )}
           <div className="flex items-center gap-3">
-            <a
-              href="#"
-              className="text-[#4A5568] hover:text-[#0ABFBC] transition-colors duration-200"
-              aria-label="GitHub"
-              onClick={(e) => e.stopPropagation()}
-            >
-              <Github size={15} />
-            </a>
-            <a
-              href="#"
-              className="text-[#4A5568] hover:text-[#0ABFBC] transition-colors duration-200"
-              aria-label="Live demo"
-              onClick={(e) => e.stopPropagation()}
-            >
-              <ExternalLink size={15} />
-            </a>
+            {project.github_url && (
+              <a
+                href={project.github_url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-[#4A5568] hover:text-[#0ABFBC] transition-colors duration-200"
+                aria-label="GitHub"
+                onClick={(e) => e.stopPropagation()}
+              >
+                <Github size={15} />
+              </a>
+            )}
+            {project.live_url && (
+              <a
+                href={project.live_url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-[#4A5568] hover:text-[#0ABFBC] transition-colors duration-200"
+                aria-label="Live demo"
+                onClick={(e) => e.stopPropagation()}
+              >
+                <ExternalLink size={15} />
+              </a>
+            )}
           </div>
         </div>
       </div>
@@ -236,12 +183,19 @@ function ProjectCard({ project }: { project: Project }) {
 }
 
 export default function Projects() {
+  const data = usePortfolioData();
+  const projects: Project[] = data.projects?.length ? data.projects : [];
+  const categoryTabs = useMemo(() => {
+    const cats = Array.from(new Set(projects.map((p) => p.category)));
+    return ["All", ...cats];
+  }, [projects]);
+
   const sectionRef = useRef<HTMLElement>(null);
   const [activeCategory, setActiveCategory] = useState("All");
 
   const filtered = activeCategory === "All"
-    ? PROJECTS
-    : PROJECTS.filter((p) => p.category === activeCategory);
+    ? projects
+    : projects.filter((p) => p.category === activeCategory);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -282,7 +236,7 @@ export default function Projects() {
 
         {/* Category filter */}
         <div className="reveal flex flex-wrap gap-2 mb-10" style={{ transitionDelay: "0.1s" }}>
-          {CATEGORIES.map((cat) => (
+          {categoryTabs.map((cat) => (
             <button
               key={cat}
               onClick={() => setActiveCategory(cat)}

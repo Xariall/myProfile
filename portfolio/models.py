@@ -53,6 +53,7 @@ class SiteProfile(models.Model):
     github_url = models.URLField("GitHub", blank=True)
     linkedin_url = models.URLField("LinkedIn", blank=True)
     telegram_url = models.URLField("Telegram", blank=True)
+    twitter_url = models.URLField("Twitter / X", blank=True)
 
     case_title = models.CharField("Кейс: заголовок", max_length=200, blank=True)
     case_problem = models.TextField("Кейс: проблема", blank=True)
@@ -88,6 +89,7 @@ class HeroTechPill(models.Model):
 
 class StackGroup(models.Model):
     title = models.CharField(max_length=120)
+    icon = models.CharField("Emoji-иконка", max_length=10, default="💻")
     sort_order = models.PositiveIntegerField(default=0, db_index=True)
 
     class Meta:
@@ -123,6 +125,11 @@ class StackItem(models.Model):
         choices=LEVEL_CHOICES,
         default="proficient",
     )
+    level_percent = models.PositiveIntegerField(
+        "Уровень (%)",
+        default=75,
+        help_text="0–100, используется для прогресс-бара на сайте.",
+    )
     sort_order = models.PositiveIntegerField(default=0, db_index=True)
 
     class Meta:
@@ -135,20 +142,17 @@ class StackItem(models.Model):
 
 
 class Project(models.Model):
-    CATEGORY_CHOICES = [
-        ("api", "API"),
-        ("commerce", "E-commerce"),
-        ("data", "Data-driven"),
-        ("other", "Другое"),
+    STATUS_CHOICES = [
+        ("Production", "Production"),
+        ("Research", "Research"),
+        ("Open Source", "Open Source"),
+        ("WIP", "WIP"),
     ]
 
     title = models.CharField(max_length=200)
     description = models.TextField(blank=True)
-    category = models.CharField(
-        max_length=20,
-        choices=CATEGORY_CHOICES,
-        default="other",
-    )
+    long_description = models.TextField("Развёрнутое описание", blank=True)
+    category = models.CharField(max_length=60, default="Other")
     tags = models.CharField(
         "Теги через запятую",
         max_length=500,
@@ -157,6 +161,13 @@ class Project(models.Model):
     )
     github_url = models.URLField(blank=True)
     live_url = models.URLField("Демо / Live", blank=True)
+    featured = models.BooleanField("Featured", default=False)
+    stars = models.CharField("Stars (отображение)", max_length=20, blank=True)
+    status = models.CharField(
+        max_length=20,
+        choices=STATUS_CHOICES,
+        default="Production",
+    )
     is_active = models.BooleanField("Показывать на сайте", default=True)
     sort_order = models.PositiveIntegerField(default=0, db_index=True)
 
@@ -170,6 +181,83 @@ class Project(models.Model):
 
     def tag_list(self):
         return [t.strip() for t in self.tags.split(",") if t.strip()]
+
+
+class Experience(models.Model):
+    TYPE_CHOICES = [
+        ("full-time", "Full-time"),
+        ("part-time", "Part-time"),
+        ("internship", "Internship"),
+        ("freelance", "Freelance"),
+    ]
+
+    role = models.CharField("Должность", max_length=200)
+    company = models.CharField("Компания", max_length=200)
+    period = models.CharField("Период", max_length=100, help_text="Например: 2021 – Present")
+    location = models.CharField("Локация", max_length=200, blank=True)
+    type = models.CharField(
+        "Тип занятости",
+        max_length=20,
+        choices=TYPE_CHOICES,
+        default="full-time",
+    )
+    description = models.TextField("Описание", blank=True)
+    achievements = models.TextField(
+        "Достижения",
+        blank=True,
+        help_text="По одному на строку — каждая строка станет пунктом списка.",
+    )
+    tags = models.CharField("Теги через запятую", max_length=500, blank=True)
+    sort_order = models.PositiveIntegerField(default=0, db_index=True)
+
+    class Meta:
+        ordering = ["sort_order", "pk"]
+        verbose_name = "Опыт работы"
+        verbose_name_plural = "Опыт работы"
+
+    def __str__(self):
+        return f"{self.role} @ {self.company}"
+
+    def achievement_list(self):
+        return [a.strip() for a in self.achievements.splitlines() if a.strip()]
+
+    def tag_list(self):
+        return [t.strip() for t in self.tags.split(",") if t.strip()]
+
+
+class Education(models.Model):
+    degree = models.CharField("Степень", max_length=50, help_text="Например: M.Sc., B.Sc.")
+    field = models.CharField("Направление", max_length=200)
+    institution = models.CharField("Учебное заведение", max_length=200)
+    period = models.CharField("Период", max_length=100)
+    gpa = models.CharField("GPA", max_length=50, blank=True)
+    thesis = models.CharField("Тема диплома / thesis", max_length=500, blank=True)
+    sort_order = models.PositiveIntegerField(default=0, db_index=True)
+
+    class Meta:
+        ordering = ["sort_order", "pk"]
+        verbose_name = "Образование"
+        verbose_name_plural = "Образование"
+
+    def __str__(self):
+        return f"{self.degree} — {self.institution}"
+
+
+class Certification(models.Model):
+    name = models.CharField("Название", max_length=200)
+    issuer = models.CharField("Выдавшая организация", max_length=200)
+    date = models.CharField("Дата / год", max_length=50)
+    credential_id = models.CharField("ID сертификата", max_length=200, blank=True)
+    badge = models.CharField("Emoji-бейдж", max_length=10, default="🎯")
+    sort_order = models.PositiveIntegerField(default=0, db_index=True)
+
+    class Meta:
+        ordering = ["sort_order", "pk"]
+        verbose_name = "Сертификат"
+        verbose_name_plural = "Сертификаты"
+
+    def __str__(self):
+        return self.name
 
 
 def get_or_create_site_profile():

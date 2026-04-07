@@ -6,8 +6,9 @@
 
 import { useRef, useEffect } from "react";
 import { Brain, Code2, Cpu, Globe } from "lucide-react";
+import { usePortfolioData } from "@/hooks/usePortfolioData";
 
-const STATS = [
+const FALLBACK_STATS = [
   { value: "X+", label: "Years Experience" },
   { value: "XX+", label: "Projects Shipped" },
   { value: "XX+", label: "Papers / Articles" },
@@ -22,6 +23,9 @@ const HIGHLIGHTS = [
 ];
 
 export default function About() {
+  const data = usePortfolioData();
+  const profile = data.profile || {};
+  const stats = data.stats?.length ? data.stats : FALLBACK_STATS;
   const sectionRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
@@ -65,14 +69,23 @@ export default function About() {
           {/* Left: Bio text */}
           <div className="space-y-5">
             <p className="reveal text-[#C4C9D4] leading-relaxed text-base" style={{ fontFamily: "'DM Sans', sans-serif", transitionDelay: "0.1s" }}>
-              Hi, I'm <span className="text-white font-semibold">Your Name</span> — an AI Engineer with a passion for building intelligent systems that bridge the gap between cutting-edge research and real-world applications.
+              {profile.about_lead || <>Hi, I'm <span className="text-white font-semibold">Your Name</span> — an AI Engineer with a passion for building intelligent systems that bridge the gap between cutting-edge research and real-world applications.</>}
             </p>
-            <p className="reveal text-[#9BA3B2] leading-relaxed text-base" style={{ fontFamily: "'DM Sans', sans-serif", transitionDelay: "0.2s" }}>
-              My work spans the full ML lifecycle: from exploratory data analysis and model architecture design, to training at scale, evaluation, and deploying robust production pipelines. I thrive at the intersection of research and engineering.
-            </p>
-            <p className="reveal text-[#9BA3B2] leading-relaxed text-base" style={{ fontFamily: "'DM Sans', sans-serif", transitionDelay: "0.3s" }}>
-              When I'm not training models, I contribute to open-source projects, write technical articles, and explore the latest advancements in foundation models, reinforcement learning, and multimodal AI.
-            </p>
+            {(profile.about_body || "").split("\n").filter(Boolean).map((para: string, i: number) => (
+              <p key={i} className="reveal text-[#9BA3B2] leading-relaxed text-base" style={{ fontFamily: "'DM Sans', sans-serif", transitionDelay: `${0.2 + i * 0.1}s` }}>
+                {para}
+              </p>
+            ))}
+            {!profile.about_body && (
+              <>
+                <p className="reveal text-[#9BA3B2] leading-relaxed text-base" style={{ fontFamily: "'DM Sans', sans-serif", transitionDelay: "0.2s" }}>
+                  My work spans the full ML lifecycle: from exploratory data analysis and model architecture design, to training at scale, evaluation, and deploying robust production pipelines. I thrive at the intersection of research and engineering.
+                </p>
+                <p className="reveal text-[#9BA3B2] leading-relaxed text-base" style={{ fontFamily: "'DM Sans', sans-serif", transitionDelay: "0.3s" }}>
+                  When I'm not training models, I contribute to open-source projects, write technical articles, and explore the latest advancements in foundation models, reinforcement learning, and multimodal AI.
+                </p>
+              </>
+            )}
 
             {/* Highlights */}
             <div className="reveal grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2" style={{ transitionDelay: "0.4s" }}>
@@ -102,7 +115,7 @@ export default function About() {
 
           {/* Right: Stats */}
           <div className="reveal grid grid-cols-2 gap-4" style={{ transitionDelay: "0.2s" }}>
-            {STATS.map(({ value, label }) => (
+            {stats.map(({ value, label }: { value: string; label: string }) => (
               <div
                 key={label}
                 className="card-hover p-6 rounded-sm"

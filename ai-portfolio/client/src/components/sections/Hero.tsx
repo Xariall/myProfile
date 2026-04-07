@@ -6,13 +6,18 @@
 
 import { useEffect, useState } from "react";
 import { ArrowDown, Github, Linkedin, Twitter } from "lucide-react";
+import { usePortfolioData } from "@/hooks/usePortfolioData";
 
 const HERO_BG = "https://d2xsxph8kpxj0f.cloudfront.net/310519663524070095/fRirMRHo2JX8PN7S366szy/hero-bg-auFN3zviWi54ZNND6BFqn2.webp";
 const AVATAR = "https://d2xsxph8kpxj0f.cloudfront.net/310519663524070095/fRirMRHo2JX8PN7S366szy/avatar-placeholder-UGhAWQzuZUZq2wtxidCCpV.webp";
 
-const ROLES = ["AI Engineer", "ML Researcher", "Deep Learning Specialist", "Data Scientist"];
+const FALLBACK_ROLES = ["AI Engineer", "ML Researcher", "Deep Learning Specialist", "Data Scientist"];
 
 export default function Hero() {
+  const data = usePortfolioData();
+  const roles = data.roles?.length ? data.roles : FALLBACK_ROLES;
+  const profile = data.profile || {};
+
   const [roleIndex, setRoleIndex] = useState(0);
   const [visible, setVisible] = useState(false);
   const [fadeRole, setFadeRole] = useState(true);
@@ -26,7 +31,7 @@ export default function Hero() {
     const interval = setInterval(() => {
       setFadeRole(false);
       setTimeout(() => {
-        setRoleIndex((i) => (i + 1) % ROLES.length);
+        setRoleIndex((i) => (i + 1) % roles.length);
         setFadeRole(true);
       }, 350);
     }, 3000);
@@ -84,7 +89,7 @@ export default function Hero() {
               className={`section-label mb-6 transition-all duration-700 ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"}`}
               style={{ transitionDelay: "0.1s" }}
             >
-              Available for opportunities
+              {profile.hero_eyebrow || "Available for opportunities"}
             </div>
 
             {/* Name */}
@@ -92,7 +97,7 @@ export default function Hero() {
               className={`text-5xl sm:text-6xl lg:text-7xl font-extrabold text-white mb-3 transition-all duration-700 ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"}`}
               style={{ fontFamily: "'Space Grotesk', sans-serif", transitionDelay: "0.2s", letterSpacing: "-0.03em" }}
             >
-              Your Name
+              {profile.hero_name || "Your Name"}
             </h1>
 
             {/* Role — animated */}
@@ -111,7 +116,7 @@ export default function Hero() {
                   transition: "opacity 0.35s ease, transform 0.35s ease",
                 }}
               >
-                {ROLES[roleIndex]}
+                {roles[roleIndex]}
               </span>
             </div>
 
@@ -120,8 +125,7 @@ export default function Hero() {
               className={`text-base sm:text-lg text-[#9BA3B2] max-w-lg leading-relaxed mb-8 transition-all duration-700 ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"}`}
               style={{ transitionDelay: "0.45s", fontFamily: "'DM Sans', sans-serif" }}
             >
-              Building intelligent systems at the intersection of research and production.
-              Passionate about turning complex models into real-world impact.
+              {profile.hero_tagline || "Building intelligent systems at the intersection of research and production. Passionate about turning complex models into real-world impact."}
             </p>
 
             {/* CTA Buttons */}
@@ -162,22 +166,21 @@ export default function Hero() {
               style={{ transitionDelay: "0.65s" }}
             >
               {[
-                { icon: Github, label: "GitHub", href: "#" },
-                { icon: Linkedin, label: "LinkedIn", href: "#" },
-                { icon: Twitter, label: "Twitter", href: "#" },
-              ].map(({ icon: Icon, label, href }) => (
+                { icon: Github, label: "GitHub", href: profile.github_url || "#" },
+                { icon: Linkedin, label: "LinkedIn", href: profile.linkedin_url || "#" },
+                { icon: Twitter, label: "Twitter", href: profile.twitter_url || "#" },
+              ].filter(s => s.href && s.href !== "#").map(({ icon: Icon, label, href }) => (
                 <a
                   key={label}
                   href={href}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   aria-label={label}
                   className="w-9 h-9 flex items-center justify-center rounded-sm border border-white/10 text-[#9BA3B2] hover:text-[#0ABFBC] hover:border-[#0ABFBC]/40 transition-all duration-200"
                 >
                   <Icon size={16} />
                 </a>
               ))}
-              <span className="text-xs text-[#4A5568] ml-2" style={{ fontFamily: "'JetBrains Mono', monospace" }}>
-                @yourusername
-              </span>
             </div>
           </div>
 

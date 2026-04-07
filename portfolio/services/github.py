@@ -132,16 +132,23 @@ def load_repos_for_portfolio(
 
 
 def repos_to_card_dicts(repos: Iterable[RepoSummary]) -> list[dict[str, Any]]:
-    """Карточки для шаблона главной (без звёзд; язык — опционально)."""
+    """Карточки для React SPA, совместимые с типом Project в Projects.tsx."""
     cards: list[dict[str, Any]] = []
-    for r in repos:
+    for i, r in enumerate(repos):
+        lang = (r.language or "").strip()
         cards.append(
             {
+                "id": f"gh{i}",
                 "title": r.name,
                 "description": r.description or "",
+                "longDescription": r.description or "",
                 "github_url": r.html_url,
                 "live_url": r.homepage or "",
-                "tags": (r.language or "").strip(),
+                "tags": [lang] if lang else [],
+                "category": lang or "Other",
+                "featured": False,
+                "stars": str(r.stargazers_count) if r.stargazers_count else "",
+                "status": "Open Source",
             }
         )
     return cards

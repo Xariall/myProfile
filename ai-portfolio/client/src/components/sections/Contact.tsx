@@ -6,9 +6,10 @@
 
 import { useRef, useEffect } from "react";
 import { Github, Mail, Send, Linkedin, Twitter, MapPin } from "lucide-react";
+import { usePortfolioData } from "@/hooks/usePortfolioData";
 
-type ContactLink = {
-  icon: React.FC<{ size?: number; className?: string }>;
+type ContactLinkData = {
+  iconName: string;
   label: string;
   value: string;
   href: string;
@@ -16,50 +17,17 @@ type ContactLink = {
   color: string;
 };
 
-const CONTACT_LINKS: ContactLink[] = [
-  {
-    icon: Mail,
-    label: "Email",
-    value: "your.email@example.com",
-    href: "mailto:your.email@example.com",
-    description: "Best for professional inquiries",
-    color: "#EA4335",
-  },
-  {
-    icon: Github,
-    label: "GitHub",
-    value: "@yourusername",
-    href: "https://github.com/yourusername",
-    description: "View my open-source work",
-    color: "#E8EAF0",
-  },
-  {
-    icon: Send,
-    label: "Telegram",
-    value: "@yourusername",
-    href: "https://t.me/yourusername",
-    description: "Quick messages & collaboration",
-    color: "#2AABEE",
-  },
-  {
-    icon: Linkedin,
-    label: "LinkedIn",
-    value: "linkedin.com/in/yourprofile",
-    href: "https://linkedin.com/in/yourprofile",
-    description: "Professional network",
-    color: "#0A66C2",
-  },
-  {
-    icon: Twitter,
-    label: "Twitter / X",
-    value: "@yourusername",
-    href: "https://twitter.com/yourusername",
-    description: "Thoughts on AI & tech",
-    color: "#E8EAF0",
-  },
-];
+const ICON_MAP: Record<string, React.FC<{ size?: number; className?: string }>> = {
+  Mail, Github, Send, Linkedin, Twitter,
+};
 
 export default function Contact() {
+  const data = usePortfolioData();
+  const rawLinks: ContactLinkData[] = data.contact_links || [];
+  const contactLinks = rawLinks.map((link) => ({
+    ...link,
+    icon: ICON_MAP[link.iconName] || Mail,
+  }));
   const sectionRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
@@ -115,7 +83,7 @@ export default function Contact() {
 
         {/* Contact cards */}
         <div className="reveal grid sm:grid-cols-2 lg:grid-cols-5 gap-4 mb-14" style={{ transitionDelay: "0.15s" }}>
-          {CONTACT_LINKS.map(({ icon: Icon, label, value, href, description, color }) => (
+          {contactLinks.map(({ icon: Icon, label, value, href, description, color }) => (
             <a
               key={label}
               href={href}

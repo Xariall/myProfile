@@ -5,6 +5,7 @@
  */
 
 import { useRef, useEffect } from "react";
+import { usePortfolioData } from "@/hooks/usePortfolioData";
 
 const SKILLS_BG = "https://d2xsxph8kpxj0f.cloudfront.net/310519663524070095/fRirMRHo2JX8PN7S366szy/skills-bg-JDFQqP7JrLQxSNS4rdKwwG.webp";
 
@@ -17,58 +18,16 @@ type Category = {
   skills: Skill[];
 };
 
-const CATEGORIES: Category[] = [
-  {
-    id: "ml",
-    label: "Machine Learning",
-    icon: "🧠",
-    skills: [
-      { name: "Deep Learning", level: 90 },
-      { name: "NLP / LLMs", level: 88 },
-      { name: "Computer Vision", level: 82 },
-      { name: "Reinforcement Learning", level: 70 },
-    ],
-  },
-  {
-    id: "frameworks",
-    label: "Frameworks & Libraries",
-    icon: "⚙️",
-    skills: [
-      { name: "PyTorch", level: 92 },
-      { name: "TensorFlow / Keras", level: 80 },
-      { name: "HuggingFace", level: 88 },
-      { name: "scikit-learn", level: 85 },
-    ],
-  },
-  {
-    id: "mlops",
-    label: "MLOps & Infrastructure",
-    icon: "🚀",
-    skills: [
-      { name: "Docker / Kubernetes", level: 78 },
-      { name: "MLflow / W&B", level: 82 },
-      { name: "AWS / GCP", level: 75 },
-      { name: "CI/CD Pipelines", level: 72 },
-    ],
-  },
-  {
-    id: "languages",
-    label: "Languages & Tools",
-    icon: "💻",
-    skills: [
-      { name: "Python", level: 95 },
-      { name: "SQL", level: 80 },
-      { name: "Bash / Linux", level: 75 },
-      { name: "Git / GitHub", level: 88 },
-    ],
-  },
+const FALLBACK_CATEGORIES: Category[] = [
+  { id: "ml", label: "Machine Learning", icon: "🧠", skills: [{ name: "Deep Learning", level: 90 }, { name: "NLP / LLMs", level: 88 }] },
+  { id: "frameworks", label: "Frameworks & Libraries", icon: "⚙️", skills: [{ name: "PyTorch", level: 92 }, { name: "TensorFlow / Keras", level: 80 }] },
+  { id: "mlops", label: "MLOps & Infrastructure", icon: "🚀", skills: [{ name: "Docker / Kubernetes", level: 78 }, { name: "MLflow / W&B", level: 82 }] },
+  { id: "languages", label: "Languages & Tools", icon: "💻", skills: [{ name: "Python", level: 95 }, { name: "SQL", level: 80 }] },
 ];
 
-const TECH_TAGS = [
+const FALLBACK_TAGS = [
   "PyTorch", "TensorFlow", "HuggingFace", "LangChain", "OpenAI API",
   "FastAPI", "Docker", "Kubernetes", "MLflow", "Weights & Biases",
-  "AWS SageMaker", "GCP Vertex AI", "PostgreSQL", "Redis", "Spark",
-  "Pandas", "NumPy", "scikit-learn", "ONNX", "Triton",
 ];
 
 function SkillBar({ name, level, delay = 0 }: { name: string; level: number; delay?: number }) {
@@ -123,6 +82,9 @@ function SkillBar({ name, level, delay = 0 }: { name: string; level: number; del
 }
 
 export default function Skills() {
+  const data = usePortfolioData();
+  const categories: Category[] = data.skills?.length ? data.skills : FALLBACK_CATEGORIES;
+  const techTags: string[] = data.pills?.length ? data.pills : FALLBACK_TAGS;
   const sectionRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
@@ -170,7 +132,7 @@ export default function Skills() {
 
         {/* Category cards grid */}
         <div className="grid sm:grid-cols-2 xl:grid-cols-4 gap-5 mb-14">
-          {CATEGORIES.map((cat, i) => (
+          {categories.map((cat, i) => (
             <div
               key={cat.id}
               className="reveal card-hover p-6 rounded-sm"
@@ -210,7 +172,7 @@ export default function Skills() {
         <div className="reveal" style={{ transitionDelay: "0.3s" }}>
           <div className="section-label mb-5">Tech Stack</div>
           <div className="flex flex-wrap gap-2">
-            {TECH_TAGS.map((tag) => (
+            {techTags.map((tag: string) => (
               <span
                 key={tag}
                 className="px-3 py-1.5 text-xs rounded-sm transition-all duration-200 hover:border-[#0ABFBC]/40 hover:text-[#0ABFBC] cursor-default"

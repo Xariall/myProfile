@@ -6,6 +6,7 @@
 
 import { useRef, useEffect } from "react";
 import { Briefcase } from "lucide-react";
+import { usePortfolioData } from "@/hooks/usePortfolioData";
 
 type ExperienceItem = {
   id: string;
@@ -19,55 +20,9 @@ type ExperienceItem = {
   tags: string[];
 };
 
-const EXPERIENCES: ExperienceItem[] = [
-  {
-    id: "e1",
-    role: "Senior AI Engineer",
-    company: "Company Name",
-    period: "20XX – Present",
-    location: "City, Country",
-    type: "Full-time",
-    description: "Leading the development of production-grade ML systems for [domain]. Responsible for model architecture, training infrastructure, and deployment pipelines.",
-    achievements: [
-      "Reduced model inference latency by XX% through optimization techniques",
-      "Led a team of X engineers to ship [product feature] used by XXX+ users",
-      "Designed and implemented a real-time recommendation system at scale",
-    ],
-    tags: ["PyTorch", "MLOps", "LLMs", "Kubernetes"],
-  },
-  {
-    id: "e2",
-    role: "Machine Learning Engineer",
-    company: "Company Name",
-    period: "20XX – 20XX",
-    location: "City, Country",
-    type: "Full-time",
-    description: "Developed and maintained ML models for [use case]. Collaborated with product and data teams to define model requirements and evaluation metrics.",
-    achievements: [
-      "Built an NLP pipeline processing XX million documents per day",
-      "Improved model accuracy by XX% through feature engineering and architecture changes",
-      "Established MLOps best practices adopted across the engineering org",
-    ],
-    tags: ["Python", "TensorFlow", "Airflow", "AWS"],
-  },
-  {
-    id: "e3",
-    role: "AI Research Intern",
-    company: "Research Lab / University",
-    period: "20XX – 20XX",
-    location: "City, Country",
-    type: "Internship",
-    description: "Conducted research on [topic] under the supervision of [Professor/Lead]. Contributed to publications and open-source tooling.",
-    achievements: [
-      "Co-authored a paper accepted at [Conference Name]",
-      "Implemented baseline models for [benchmark/task]",
-      "Contributed to an open-source library with XXX+ GitHub stars",
-    ],
-    tags: ["Research", "PyTorch", "NLP", "Academic"],
-  },
-];
-
 export default function Experience() {
+  const data = usePortfolioData();
+  const experiences: ExperienceItem[] = data.experience?.length ? data.experience : [];
   const sectionRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
@@ -119,7 +74,7 @@ export default function Experience() {
           />
 
           <div className="space-y-10">
-            {EXPERIENCES.map((exp, i) => {
+            {experiences.map((exp, i) => {
               const isLeft = i % 2 === 0;
               return (
                 <div

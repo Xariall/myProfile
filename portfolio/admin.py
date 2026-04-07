@@ -1,6 +1,9 @@
 from django.contrib import admin
 
 from portfolio.models import (
+    Certification,
+    Education,
+    Experience,
     HeroTechPill,
     Project,
     SiteProfile,
@@ -109,3 +112,21 @@ class ProjectAdmin(admin.ModelAdmin):
     list_filter = ("category", "is_active")
     ordering = ("sort_order", "pk")
     search_fields = ("title", "description")
+
+
+@admin.register(Experience)
+class ExperienceAdmin(admin.ModelAdmin):
+    list_display = ("role", "company", "period", "type", "sort_order")
+    ordering = ("sort_order", "pk")
+
+
+@admin.register(Education)
+class EducationAdmin(admin.ModelAdmin):
+    list_display = ("degree", "field", "institution", "period", "sort_order")
+    ordering = ("sort_order", "pk")
+
+
+@admin.register(Certification)
+class CertificationAdmin(admin.ModelAdmin):
+    list_display = ("name", "issuer", "date", "sort_order")
+    ordering = ("sort_order", "pk")
