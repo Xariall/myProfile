@@ -1,0 +1,212 @@
+/*
+ * AI Engineer Portfolio — Global Styles
+ * Design: Swiss Dark Editorial + Cold Teal Accent
+ * Fonts: Space Grotesk (display), DM Sans (body), JetBrains Mono (labels/code)
+ * Palette: #0D0F14 bg, #0ABFBC accent, #E8EAF0 text
+ */
+
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-teal: var(--teal);
+  --color-teal-dim: var(--teal-dim);
+}
+
+:root {
+  --radius: 0.5rem;
+  --background: oklch(0.112 0.012 265);
+  --foreground: oklch(0.92 0.006 255);
+  --card: oklch(0.148 0.012 265);
+  --card-foreground: oklch(0.92 0.006 255);
+  --popover: oklch(0.148 0.012 265);
+  --popover-foreground: oklch(0.92 0.006 255);
+  --primary: oklch(0.72 0.14 192);
+  --primary-foreground: oklch(0.1 0.01 265);
+  --secondary: oklch(0.19 0.012 265);
+  --secondary-foreground: oklch(0.82 0.006 255);
+  --muted: oklch(0.19 0.01 265);
+  --muted-foreground: oklch(0.58 0.012 265);
+  --accent: oklch(0.72 0.14 192);
+  --accent-foreground: oklch(0.1 0.01 265);
+  --destructive: oklch(0.65 0.22 25);
+  --border: oklch(1 0 0 / 8%);
+  --input: oklch(1 0 0 / 10%);
+  --ring: oklch(0.72 0.14 192);
+  --teal: #0ABFBC;
+  --teal-dim: rgba(10, 191, 188, 0.12);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+    box-sizing: border-box;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-family: 'DM Sans', system-ui, sans-serif;
+    font-size: 16px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Space Grotesk', system-ui, sans-serif;
+    font-weight: 700;
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+  }
+
+  code, pre, .mono {
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  button:not(:disabled),
+  [role="button"]:not([aria-disabled="true"]),
+  a[href] {
+    @apply cursor-pointer;
+  }
+
+  ::selection {
+    background: rgba(10, 191, 188, 0.25);
+    color: #fff;
+  }
+
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  ::-webkit-scrollbar-track {
+    background: oklch(0.112 0.012 265);
+  }
+  ::-webkit-scrollbar-thumb {
+    background: oklch(0.28 0.012 265);
+    border-radius: 3px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: oklch(0.72 0.14 192 / 60%);
+  }
+}
+
+@layer components {
+  .container {
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 1.25rem;
+    padding-right: 1.25rem;
+  }
+
+  .flex {
+    min-height: 0;
+    min-width: 0;
+  }
+
+  @media (min-width: 640px) {
+    .container {
+      padding-left: 2rem;
+      padding-right: 2rem;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .container {
+      padding-left: 3rem;
+      padding-right: 3rem;
+      max-width: 1320px;
+    }
+  }
+
+  /* Section counter label style */
+  .section-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--teal);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .section-label::before,
+  .section-label::after {
+    content: '';
+    display: inline-block;
+    height: 1px;
+    background: var(--teal);
+    opacity: 0.6;
+    flex: 0 0 2.5rem;
+  }
+
+  .section-label:not(.justify-center)::before {
+    display: none;
+  }
+
+  /* Teal hairline rule */
+  .teal-rule {
+    border: none;
+    height: 1px;
+    background: linear-gradient(90deg, var(--teal) 0%, transparent 100%);
+    opacity: 0.3;
+  }
+
+  /* Glow effect for teal elements */
+  .teal-glow {
+    box-shadow: 0 0 20px rgba(10, 191, 188, 0.15), 0 0 40px rgba(10, 191, 188, 0.05);
+  }
+
+  /* Card hover transition */
+  .card-hover {
+    transition: border-color 0.25s ease, box-shadow 0.25s ease, transform 0.25s ease;
+  }
+
+  .card-hover:hover {
+    border-color: rgba(10, 191, 188, 0.4) !important;
+    box-shadow: 0 0 24px rgba(10, 191, 188, 0.08), 0 8px 32px rgba(0,0,0,0.4);
+    transform: translateY(-2px);
+  }
+
+  /* Scroll reveal animation */
+  .reveal {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+  }
+
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

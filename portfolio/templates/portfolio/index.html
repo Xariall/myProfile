@@ -3,181 +3,272 @@
 <html lang="ru">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1" />
     <title>{{ profile.hero_name|default:name }} — портфолио</title>
     <meta name="description" content="{{ profile.hero_tagline|default:tagline }}" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,600;0,9..40,700;1,9..40,400&family=JetBrains+Mono:wght@400;500&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&family=JetBrains+Mono:wght@400;500&display=swap"
       rel="stylesheet"
     />
     <link rel="stylesheet" href="{% static 'portfolio/css/home.css' %}" />
   </head>
   <body>
-    <div class="bg-mesh" aria-hidden="true"></div>
+    <div class="scroll-progress" id="scroll-progress"></div>
 
-    <header class="site-header">
-      <div class="wrap inner">
-        <a class="logo" href="{% url 'home' %}">{{ logo_text }}</a>
-        <nav class="nav" aria-label="Основная навигация">
+    {# ——— Header ——— #}
+    <header class="site-header" id="site-header">
+      <div class="container header-inner">
+        <a class="brand" href="#hero">
+          <span class="brand-mark">P</span>
+          <span class="brand-text">{{ logo_text }}</span>
+        </a>
+
+        <nav class="nav" id="desktop-nav">
           <a href="#about">{{ profile.about_title|default:"Обо мне" }}</a>
           <a href="#stack">{{ profile.stack_title|default:"Стек" }}</a>
           <a href="#projects">{{ profile.projects_title|default:"Проекты" }}</a>
           <a href="#contact">{{ profile.contact_title|default:"Контакты" }}</a>
+          <a class="nav-cta" href="#contact">Связаться</a>
         </nav>
+
+        <button type="button" class="nav-toggle" id="nav-toggle" aria-label="Меню" aria-expanded="false">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+        </button>
+      </div>
+
+      <div class="mobile-nav" id="mobile-nav">
+        <a href="#about">{{ profile.about_title|default:"Обо мне" }}</a>
+        <a href="#stack">{{ profile.stack_title|default:"Стек" }}</a>
+        <a href="#projects">{{ profile.projects_title|default:"Проекты" }}</a>
+        <a href="#contact">{{ profile.contact_title|default:"Контакты" }}</a>
+        <a class="mobile-nav-cta" href="#contact">Связаться</a>
       </div>
     </header>
 
     <main>
-      <section class="hero" aria-labelledby="hero-title">
-        <div class="wrap hero-grid">
-          <div>
-            {% if profile.hero_eyebrow %}
-              <p class="eyebrow">{{ profile.hero_eyebrow }}</p>
-            {% endif %}
-            <h1 id="hero-title">{{ profile.hero_name|default:name }}</h1>
-            <p class="lead">{{ profile.hero_tagline|default:tagline }}</p>
-            {% if profile.hero_role %}
-              <p class="lead" style="margin-top: -0.75rem; font-size: 1rem">{{ profile.hero_role }}</p>
-            {% endif %}
+      {# ——— Hero ——— #}
+      <section class="hero" id="hero">
+        <div class="hero-dot-grid"></div>
+        <div class="hero-gradient"></div>
 
-            {% if pills %}
-              <ul class="tech-pills" style="list-style: none; padding: 0; margin: 0 0 1rem; display: flex; flex-wrap: wrap; gap: 0.5rem">
-                {% for p in pills %}
-                  <li class="tech-pill" style="display: inline-block; padding: 0.25rem 0.6rem; border-radius: 999px; border: 1px solid rgba(255,255,255,0.12); font-size: 0.85rem">{{ p.label }}</li>
-                {% endfor %}
-              </ul>
-            {% endif %}
+        <div class="container hero-content">
+          <div class="hero-grid">
+            <div class="hero-text">
+              {% if profile.hero_eyebrow %}
+                <div class="section-label" style="margin-bottom: 1.5rem">{{ profile.hero_eyebrow }}</div>
+              {% endif %}
 
-            <div class="actions">
-              <a class="btn btn-primary" href="#contact">Связаться</a>
-              <a class="btn btn-ghost" href="#projects">Смотреть работы</a>
+              <h1 class="hero-name">{{ profile.hero_name|default:name }}</h1>
+
+              {% if profile.hero_role %}
+                <div class="hero-role" id="hero-role">{{ profile.hero_role }}</div>
+              {% endif %}
+
+              <p class="hero-tagline">{{ profile.hero_tagline|default:tagline }}</p>
+
+              {% if pills %}
+                <div style="display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 2rem">
+                  {% for p in pills %}
+                    <span class="tech-tag">{{ p.label }}</span>
+                  {% endfor %}
+                </div>
+              {% endif %}
+
+              <div class="hero-actions">
+                <a class="btn-teal" href="#projects">Смотреть работы</a>
+                <a class="btn-outline" href="#contact">Связаться</a>
+              </div>
+
+              <div class="hero-socials">
+                {% if profile.github_url %}
+                  <a class="hero-social-link" href="{{ profile.github_url }}" rel="noopener noreferrer" aria-label="GitHub">
+                    <svg viewBox="0 0 24 24" class="icon"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 00-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0020 4.77 5.07 5.07 0 0019.91 1S18.73.65 16 2.48a13.38 13.38 0 00-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 005 4.77a5.44 5.44 0 00-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 009 18.13V22"/></svg>
+                  </a>
+                {% endif %}
+                {% if profile.linkedin_url %}
+                  <a class="hero-social-link" href="{{ profile.linkedin_url }}" rel="noopener noreferrer" aria-label="LinkedIn">
+                    <svg viewBox="0 0 24 24" class="icon"><path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-4 0v7h-4v-7a6 6 0 016-6zM2 9h4v12H2zM4 6a2 2 0 100-4 2 2 0 000 4z"/></svg>
+                  </a>
+                {% endif %}
+                {% if profile.telegram_url %}
+                  <a class="hero-social-link" href="{{ profile.telegram_url }}" rel="noopener noreferrer" aria-label="Telegram">
+                    <svg viewBox="0 0 24 24" class="icon"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg>
+                  </a>
+                {% endif %}
+              </div>
             </div>
           </div>
-          <aside class="hero-card" aria-label="Пример кода">
-            <pre class="code-block{% if profile.code_block %} code-block--plain{% endif %}">{% if profile.code_block %}{{ profile.code_block|escape }}{% else %}<span class="cm"># start small</span>
-<span class="name">steady</span> <span class="op">=</span> <span class="builtin">True</span>{% endif %}</pre>
-          </aside>
         </div>
       </section>
 
-      <section id="about" aria-labelledby="about-title">
-        <div class="wrap">
-          <h2 id="about-title">{{ profile.about_title|default:"Обо мне" }}</h2>
-          {% if profile.about_lead %}
-            <p class="section-lead">{{ profile.about_lead }}</p>
-          {% endif %}
-          {% if profile.about_body %}
-            <div class="section-lead" style="max-width: 65ch">{{ profile.about_body|linebreaks }}</div>
-          {% endif %}
+      {# ——— About ——— #}
+      <section class="section" id="about">
+        <div class="container">
+          <div class="reveal" style="margin-bottom: 3rem">
+            <div class="section-label" style="margin-bottom: 0.75rem">01 / {{ profile.about_title|default:"Обо мне" }}</div>
+            <h2 class="section-title">{{ profile.about_title|default:"Обо мне" }}</h2>
+            <hr class="teal-rule" style="margin-top: 1rem; max-width: 16rem" />
+          </div>
 
-          {% if profile.m1_value or profile.m2_value or profile.m3_value %}
-            <div class="metrics" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 1rem; margin-top: 1.5rem">
+          <div class="about-grid">
+            <div class="about-text">
+              {% if profile.about_lead %}
+                <p class="reveal">{{ profile.about_lead }}</p>
+              {% endif %}
+              {% if profile.about_body %}
+                <div class="reveal">{{ profile.about_body|linebreaks }}</div>
+              {% endif %}
+            </div>
+
+            <div class="reveal stats-grid">
               {% if profile.m1_value %}
-                <div class="metric" style="text-align: center; padding: 1rem; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1)">
-                  <div style="font-size: 1.5rem; font-weight: 700; color: var(--accent, #3dd6c3)">{{ profile.m1_value }}</div>
-                  <div style="font-size: 0.85rem; color: var(--muted, #8b9cb0)">{{ profile.m1_label }}</div>
+                <div class="stat-card card-hover">
+                  <div class="stat-value">{{ profile.m1_value }}</div>
+                  <div class="stat-label">{{ profile.m1_label }}</div>
                 </div>
               {% endif %}
               {% if profile.m2_value %}
-                <div class="metric" style="text-align: center; padding: 1rem; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1)">
-                  <div style="font-size: 1.5rem; font-weight: 700; color: var(--accent, #3dd6c3)">{{ profile.m2_value }}</div>
-                  <div style="font-size: 0.85rem; color: var(--muted, #8b9cb0)">{{ profile.m2_label }}</div>
+                <div class="stat-card card-hover">
+                  <div class="stat-value">{{ profile.m2_value }}</div>
+                  <div class="stat-label">{{ profile.m2_label }}</div>
                 </div>
               {% endif %}
               {% if profile.m3_value %}
-                <div class="metric" style="text-align: center; padding: 1rem; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1)">
-                  <div style="font-size: 1.5rem; font-weight: 700; color: var(--accent, #3dd6c3)">{{ profile.m3_value }}</div>
-                  <div style="font-size: 0.85rem; color: var(--muted, #8b9cb0)">{{ profile.m3_label }}</div>
+                <div class="stat-card card-hover">
+                  <div class="stat-value">{{ profile.m3_value }}</div>
+                  <div class="stat-label">{{ profile.m3_label }}</div>
                 </div>
               {% endif %}
             </div>
-          {% endif %}
+          </div>
         </div>
       </section>
 
-      <section id="stack" aria-labelledby="stack-title">
-        <div class="wrap">
-          <h2 id="stack-title">{{ profile.stack_title|default:"Стек" }}</h2>
-          {% if profile.stack_lead %}
-            <p class="section-lead">{{ profile.stack_lead }}</p>
-          {% endif %}
+      {# ——— Stack / Skills ——— #}
+      <section class="section section--alt" id="stack">
+        <div class="container">
+          <div class="reveal" style="margin-bottom: 3rem">
+            <div class="section-label" style="margin-bottom: 0.75rem">02 / {{ profile.stack_title|default:"Стек" }}</div>
+            <h2 class="section-title">{{ profile.stack_title|default:"Стек" }}</h2>
+            <hr class="teal-rule" style="margin-top: 1rem; max-width: 16rem" />
+          </div>
 
-          {% for group in stack_groups %}
-            <h3 style="font-size: 1rem; margin: 1.5rem 0 0.75rem; color: var(--muted, #8b9cb0); text-transform: uppercase; letter-spacing: 0.06em">{{ group.title }}</h3>
-            <div class="grid-3">
-              {% for item in group.items.all %}
-                <article class="card">
-                  <h3>{{ item.name }}</h3>
-                  {% if item.hint %}<p>{{ item.hint }}</p>{% endif %}
-                  <p style="font-size: 0.75rem; margin-top: 0.5rem; color: var(--accent, #3dd6c3)">{{ item.get_level_display }}</p>
-                </article>
-              {% empty %}
-                <p class="section-lead">Добавьте группы и элементы стека в админке.</p>
+          {% if stack_groups %}
+            <div class="skills-grid">
+              {% for group in stack_groups %}
+                <div class="reveal skill-card card-hover">
+                  <div class="skill-card-header">
+                    <span class="skill-card-emoji">
+                      {% if forloop.counter == 1 %}🧠{% elif forloop.counter == 2 %}⚙️{% elif forloop.counter == 3 %}🗄️{% elif forloop.counter == 4 %}🚀{% else %}💻{% endif %}
+                    </span>
+                    <span class="skill-card-title">{{ group.title }}</span>
+                  </div>
+                  <div class="skill-bars">
+                    {% for item in group.items.all %}
+                      <div>
+                        <div class="skill-bar-row">
+                          <span class="skill-bar-name">{{ item.name }}</span>
+                          <span class="skill-bar-pct">{{ item.get_level_display }}</span>
+                        </div>
+                        <div class="skill-bar-track">
+                          <div
+                            class="skill-bar-fill"
+                            data-level="{% if item.level == 'advanced' %}90{% elif item.level == 'proficient' %}75{% else %}60{% endif %}"
+                          ></div>
+                        </div>
+                      </div>
+                    {% endfor %}
+                  </div>
+                </div>
               {% endfor %}
             </div>
-          {% empty %}
-            <p class="section-lead">Раздел «Стек» настраивается в админке: группы и элементы.</p>
-          {% endfor %}
+          {% else %}
+            <p class="section-desc reveal">Раздел «Стек» настраивается в админке: группы и элементы.</p>
+          {% endif %}
         </div>
       </section>
 
-      <section id="projects" aria-labelledby="projects-title">
-        <div class="wrap">
-          <h2 id="projects-title">{{ profile.projects_title|default:"Проекты" }}</h2>
+      {# ——— Projects ——— #}
+      <section class="section" id="projects">
+        <div class="container">
+          <div class="reveal" style="margin-bottom: 1.5rem">
+            <div class="section-label" style="margin-bottom: 0.75rem">03 / {{ profile.projects_title|default:"Проекты" }}</div>
+            <h2 class="section-title">{{ profile.projects_title|default:"Проекты" }}</h2>
+            <hr class="teal-rule" style="margin-top: 1rem; max-width: 16rem" />
+          </div>
+
           {% if profile.projects_lead %}
-            <p class="section-lead">{{ profile.projects_lead }}</p>
+            <p class="section-desc reveal" style="margin-bottom: 2rem">{{ profile.projects_lead }}</p>
           {% endif %}
-          {% if projects_from_github %}
-            <p class="section-lead" style="font-size: 0.9rem; opacity: 0.85">
-              Репозитории с GitHub · кеш обновляется примерно раз в {{ github_cache_ttl_minutes }} мин.
-            </p>
-          {% endif %}
-          <div class="projects{% if projects_from_github %} projects--github{% endif %}">
+
+          <div class="projects-grid">
             {% for project in portfolio_projects %}
-              <article class="project" data-category="{% if projects_from_github %}github{% else %}{{ project.category }}{% endif %}">
-                <h3>{{ project.title }}</h3>
-                {% if project.description %}<p class="project-desc">{{ project.description }}</p>{% endif %}
-                {% if project.tags %}
-                  <p class="project-tags">{{ project.tags }}</p>
-                {% endif %}
-                <div class="project-actions">
-                  {% if project.github_url %}
-                    <a href="{{ project.github_url }}" rel="noopener noreferrer">GitHub</a>
+              <div class="reveal project-card">
+                <div class="project-card-inner">
+                  {% if project.tags %}
+                    <div class="project-meta">
+                      <span class="project-category">{{ project.tags }}</span>
+                    </div>
                   {% endif %}
-                  {% if project.live_url %}
-                    <a href="{{ project.live_url }}" rel="noopener noreferrer">Live</a>
+
+                  <h3>{{ project.title }}</h3>
+
+                  {% if project.description %}
+                    <p>{{ project.description }}</p>
                   {% endif %}
+
+                  <div class="project-links">
+                    {% if project.github_url %}
+                      <a href="{{ project.github_url }}" rel="noopener noreferrer">GitHub</a>
+                    {% endif %}
+                    {% if project.live_url %}
+                      <a href="{{ project.live_url }}" rel="noopener noreferrer">Live</a>
+                    {% endif %}
+                  </div>
                 </div>
-              </article>
+              </div>
             {% empty %}
-              <p class="section-lead">
+              <p class="section-desc">
                 {% if projects_from_github %}
-                  {% if github_curated %}
-                    Не удалось показать ни один репозиторий из списка. Проверьте имена в <code>GITHUB_REPO_ALLOWLIST</code> и права токена.
-                  {% else %}
-                    Публичных репозиториев не найдено (или все отфильтрованы). Проверьте логин в .env.
-                  {% endif %}
+                  Публичных репозиториев не найдено.
                 {% else %}
-                  Добавьте проекты в админке или задайте GITHUB_USERNAME для подгрузки с GitHub.
+                  Добавьте проекты в админке или задайте GITHUB_USERNAME.
                 {% endif %}
               </p>
             {% endfor %}
           </div>
 
+          {% if profile.github_url %}
+            <div class="projects-more reveal">
+              <a href="{{ profile.github_url }}" rel="noopener noreferrer">
+                Все проекты на GitHub <span>→</span>
+              </a>
+            </div>
+          {% endif %}
+
           {% if profile.case_title %}
-            <div class="case-study" style="margin-top: 2rem; padding: 1.5rem; border-radius: 14px; border: 1px solid rgba(255,255,255,0.12)">
-              <h3 style="margin-top: 0">{{ profile.case_title }}</h3>
-              <div style="display: grid; gap: 1rem">
+            <div class="reveal" style="margin-top: 3rem; padding: 1.5rem; border-radius: 4px; background: var(--surface); border: 1px solid rgba(10,191,188,0.18)">
+              <h3 style="margin: 0 0 1rem; font-size: 1.1rem">{{ profile.case_title }}</h3>
+              <div style="display: grid; gap: 1.25rem">
                 {% if profile.case_problem %}
-                  <div><strong style="color: var(--accent, #3dd6c3)">Проблема</strong><p style="margin: 0.35rem 0 0">{{ profile.case_problem }}</p></div>
+                  <div>
+                    <strong style="display: block; font-family: var(--font-mono); font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--teal); margin-bottom: 0.35rem">Проблема</strong>
+                    <p style="margin: 0; font-size: 0.875rem; color: var(--text-muted)">{{ profile.case_problem }}</p>
+                  </div>
                 {% endif %}
                 {% if profile.case_solution %}
-                  <div><strong style="color: var(--accent, #3dd6c3)">Решение</strong><p style="margin: 0.35rem 0 0">{{ profile.case_solution }}</p></div>
+                  <div>
+                    <strong style="display: block; font-family: var(--font-mono); font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--teal); margin-bottom: 0.35rem">Решение</strong>
+                    <p style="margin: 0; font-size: 0.875rem; color: var(--text-muted)">{{ profile.case_solution }}</p>
+                  </div>
                 {% endif %}
                 {% if profile.case_result %}
-                  <div><strong style="color: var(--accent, #3dd6c3)">Результат</strong><p style="margin: 0.35rem 0 0">{{ profile.case_result }}</p></div>
+                  <div>
+                    <strong style="display: block; font-family: var(--font-mono); font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--teal); margin-bottom: 0.35rem">Результат</strong>
+                    <p style="margin: 0; font-size: 0.875rem; color: var(--text-muted)">{{ profile.case_result }}</p>
+                  </div>
                 {% endif %}
               </div>
             </div>
@@ -185,40 +276,93 @@
         </div>
       </section>
 
-      <section id="contact" aria-labelledby="contact-title">
-        <div class="wrap">
-          <h2 id="contact-title">{{ profile.contact_title|default:"Контакты" }}</h2>
-          {% if profile.contact_lead %}
-            <p class="section-lead">{{ profile.contact_lead }}</p>
-          {% endif %}
-          <div class="actions">
-            {% if profile.contact_email_href %}
-              <a class="btn btn-primary" href="{{ profile.contact_email_href }}">{{ profile.contact_email|default:"Email" }}</a>
-            {% elif profile.contact_email %}
-              <a class="btn btn-primary" href="mailto:{{ profile.contact_email }}">{{ profile.contact_email }}</a>
+      {# ——— Contact ——— #}
+      <section class="section section--alt" id="contact">
+        <div class="container">
+          <div class="reveal contact-header">
+            <div class="section-label section-label--center" style="margin-bottom: 0.75rem">04 / {{ profile.contact_title|default:"Контакты" }}</div>
+            <h2 class="section-title" style="margin-bottom: 1rem">{{ profile.contact_title|default:"Контакты" }}</h2>
+            {% if profile.contact_lead %}
+              <p class="section-desc">{{ profile.contact_lead }}</p>
             {% endif %}
+          </div>
+
+          <div class="reveal contact-cards">
+            {% if profile.contact_email %}
+              <a class="contact-card card-hover" href="{{ profile.contact_email_href|default:'#' }}" rel="noopener noreferrer">
+                <div class="contact-card-icon" style="background: rgba(234,67,53,0.08); border: 1px solid rgba(234,67,53,0.16); color: #EA4335">
+                  <svg viewBox="0 0 24 24" class="icon"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M22 7l-8.97 5.7a1.94 1.94 0 01-2.06 0L2 7"/></svg>
+                </div>
+                <div class="contact-card-label">Email</div>
+                <div class="contact-card-value">{{ profile.contact_email }}</div>
+                <div class="contact-card-desc">Для запросов и предложений</div>
+              </a>
+            {% endif %}
+
             {% if profile.github_url %}
-              <a class="btn btn-ghost" href="{{ profile.github_url }}" rel="noopener noreferrer">GitHub</a>
+              <a class="contact-card card-hover" href="{{ profile.github_url }}" rel="noopener noreferrer">
+                <div class="contact-card-icon" style="background: rgba(232,234,240,0.06); border: 1px solid rgba(232,234,240,0.12); color: #E8EAF0">
+                  <svg viewBox="0 0 24 24" class="icon"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 00-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0020 4.77 5.07 5.07 0 0019.91 1S18.73.65 16 2.48a13.38 13.38 0 00-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 005 4.77a5.44 5.44 0 00-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 009 18.13V22"/></svg>
+                </div>
+                <div class="contact-card-label">GitHub</div>
+                <div class="contact-card-value">Open Source</div>
+                <div class="contact-card-desc">Мои проекты и код</div>
+              </a>
             {% endif %}
-            {% if profile.linkedin_url %}
-              <a class="btn btn-ghost" href="{{ profile.linkedin_url }}" rel="noopener noreferrer">LinkedIn</a>
-            {% endif %}
+
             {% if profile.telegram_url %}
-              <a class="btn btn-ghost" href="{{ profile.telegram_url }}" rel="noopener noreferrer">Telegram</a>
+              <a class="contact-card card-hover" href="{{ profile.telegram_url }}" rel="noopener noreferrer">
+                <div class="contact-card-icon" style="background: rgba(42,171,238,0.08); border: 1px solid rgba(42,171,238,0.16); color: #2AABEE">
+                  <svg viewBox="0 0 24 24" class="icon"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg>
+                </div>
+                <div class="contact-card-label">Telegram</div>
+                <div class="contact-card-value">Быстрые сообщения</div>
+                <div class="contact-card-desc">Для оперативной связи</div>
+              </a>
             {% endif %}
+
+            {% if profile.linkedin_url %}
+              <a class="contact-card card-hover" href="{{ profile.linkedin_url }}" rel="noopener noreferrer">
+                <div class="contact-card-icon" style="background: rgba(10,102,194,0.08); border: 1px solid rgba(10,102,194,0.16); color: #0A66C2">
+                  <svg viewBox="0 0 24 24" class="icon"><path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-4 0v7h-4v-7a6 6 0 016-6zM2 9h4v12H2zM4 6a2 2 0 100-4 2 2 0 000 4z"/></svg>
+                </div>
+                <div class="contact-card-label">LinkedIn</div>
+                <div class="contact-card-value">Professional</div>
+                <div class="contact-card-desc">Профессиональная сеть</div>
+              </a>
+            {% endif %}
+          </div>
+
+          <hr class="teal-rule reveal" style="margin-top: 3.5rem; margin-bottom: 2.5rem" />
+
+          <div class="reveal contact-bottom">
+            <div class="contact-location">
+              <svg viewBox="0 0 24 24" class="icon" style="width: 13px; height: 13px"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+              Доступен для удалённой работы
+            </div>
+            <div class="contact-response">Обычно отвечаю в течение 24ч</div>
           </div>
         </div>
       </section>
     </main>
 
+    {# ——— Footer ——— #}
     <footer class="site-footer">
-      <div class="wrap">
-        <span>© {% now "Y" %} {{ profile.hero_name|default:name }}. Сделано на Django.</span>
-        <div class="footer-links">
-          <a href="{% url 'home' %}">Наверх</a>
-          <a href="/admin/">Админка</a>
+      <div class="container footer-inner">
+        <div class="footer-brand">
+          <span class="brand-mark" style="width: 24px; height: 24px; font-size: 9px">P</span>
+          <span class="footer-copy">© {% now "Y" %} {{ profile.hero_name|default:name }}.</span>
         </div>
+        <nav class="footer-links">
+          <a href="#about">{{ profile.about_title|default:"Обо мне" }}</a>
+          <a href="#stack">{{ profile.stack_title|default:"Стек" }}</a>
+          <a href="#projects">{{ profile.projects_title|default:"Проекты" }}</a>
+          <a href="#contact">{{ profile.contact_title|default:"Контакты" }}</a>
+          <a href="/admin/">Админка</a>
+        </nav>
       </div>
     </footer>
+
+    <script src="{% static 'portfolio/js/home.js' %}" defer></script>
   </body>
 </html>
