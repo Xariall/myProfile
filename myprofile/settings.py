@@ -114,6 +114,13 @@ USE_TZ = True
 STATIC_URL = "static/"
 STATIC_ROOT = BASE_DIR / "staticfiles"
 
+CACHES = {
+    "default": {
+        "BACKEND": "django.core.cache.backends.locmem.LocMemCache",
+        "LOCATION": "portfolio",
+    }
+}
+
 if "DEFAULT_FILE_STORAGE" not in globals():
     MEDIA_URL = "media/"
     MEDIA_ROOT = BASE_DIR / "media"
@@ -139,3 +146,7 @@ else:
 
 GITHUB_TOKEN = env("GITHUB_TOKEN", default="")
 GITHUB_USERNAME = env("GITHUB_USERNAME", default="")
+GITHUB_REPOS_LIMIT = env.int("GITHUB_REPOS_LIMIT", default=12)
+GITHUB_CACHE_TTL = env.int("GITHUB_CACHE_TTL", default=300)
+GITHUB_EXCLUDE_FORKS = env.bool("GITHUB_EXCLUDE_FORKS", default=True)
+GITHUB_EXCLUDE_PRIVATE = env.bool("GITHUB_EXCLUDE_PRIVATE", default=True)

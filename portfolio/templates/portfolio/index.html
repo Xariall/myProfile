@@ -133,9 +133,14 @@
           {% if profile.projects_lead %}
             <p class="section-lead">{{ profile.projects_lead }}</p>
           {% endif %}
+          {% if projects_from_github %}
+            <p class="section-lead" style="font-size: 0.9rem; opacity: 0.85">
+              Репозитории с GitHub · кеш обновляется примерно раз в {{ github_cache_ttl_minutes }} мин.
+            </p>
+          {% endif %}
           <div class="projects">
-            {% for project in projects %}
-              <article class="project" data-category="{{ project.category }}">
+            {% for project in portfolio_projects %}
+              <article class="project" data-category="{% if projects_from_github %}github{% else %}{{ project.category }}{% endif %}">
                 <h3>{{ project.title }}</h3>
                 {% if project.description %}<p>{{ project.description }}</p>{% endif %}
                 {% if project.tags %}
@@ -151,7 +156,13 @@
                 </div>
               </article>
             {% empty %}
-              <p class="section-lead">Добавьте проекты в админке.</p>
+              <p class="section-lead">
+                {% if projects_from_github %}
+                  Публичных репозиториев не найдено (или все отфильтрованы). Проверьте логин и настройки в .env.
+                {% else %}
+                  Добавьте проекты в админке или задайте GITHUB_USERNAME для подгрузки с GitHub.
+                {% endif %}
+              </p>
             {% endfor %}
           </div>
 
