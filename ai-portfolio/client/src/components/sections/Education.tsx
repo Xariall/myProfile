@@ -58,12 +58,12 @@ export default function EducationSection() {
       <div className="container">
         {/* Section header */}
         <div className="reveal mb-12">
-          <div className="section-label mb-3">05 / Education</div>
+          <div className="section-label mb-3">05 / Образование</div>
           <h2
             className="text-3xl sm:text-4xl font-bold text-white"
             style={{ fontFamily: "'Space Grotesk', sans-serif" }}
           >
-            Education &amp; Certifications
+            Образование и сертификаты
           </h2>
           <hr className="teal-rule mt-4 max-w-xs" />
         </div>
@@ -77,7 +77,7 @@ export default function EducationSection() {
                 className="text-sm font-semibold text-[#E8EAF0] uppercase tracking-wider"
                 style={{ fontFamily: "'Space Grotesk', sans-serif" }}
               >
-                Academic Background
+                Академическое образование
               </h3>
             </div>
 
@@ -150,7 +150,7 @@ export default function EducationSection() {
                 className="text-sm font-semibold text-[#E8EAF0] uppercase tracking-wider"
                 style={{ fontFamily: "'Space Grotesk', sans-serif" }}
               >
-                Certifications
+                Сертификаты
               </h3>
             </div>
 

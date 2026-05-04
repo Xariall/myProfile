@@ -19,10 +19,10 @@ type Category = {
 };
 
 const FALLBACK_CATEGORIES: Category[] = [
-  { id: "ml", label: "Machine Learning", icon: "🧠", skills: [{ name: "Deep Learning", level: 90 }, { name: "NLP / LLMs", level: 88 }] },
-  { id: "frameworks", label: "Frameworks & Libraries", icon: "⚙️", skills: [{ name: "PyTorch", level: 92 }, { name: "TensorFlow / Keras", level: 80 }] },
-  { id: "mlops", label: "MLOps & Infrastructure", icon: "🚀", skills: [{ name: "Docker / Kubernetes", level: 78 }, { name: "MLflow / W&B", level: 82 }] },
-  { id: "languages", label: "Languages & Tools", icon: "💻", skills: [{ name: "Python", level: 95 }, { name: "SQL", level: 80 }] },
+  { id: "ml", label: "Машинное обучение", icon: "🧠", skills: [{ name: "Глубокое обучение", level: 90 }, { name: "NLP / LLM", level: 88 }] },
+  { id: "frameworks", label: "Фреймворки и библиотеки", icon: "⚙️", skills: [{ name: "PyTorch", level: 92 }, { name: "TensorFlow / Keras", level: 80 }] },
+  { id: "mlops", label: "MLOps и инфраструктура", icon: "🚀", skills: [{ name: "Docker / Kubernetes", level: 78 }, { name: "MLflow / W&B", level: 82 }] },
+  { id: "languages", label: "Языки и инструменты", icon: "💻", skills: [{ name: "Python", level: 95 }, { name: "SQL", level: 80 }] },
 ];
 
 const FALLBACK_TAGS = [
@@ -120,12 +120,12 @@ export default function Skills() {
       <div className="container relative z-10">
         {/* Section header */}
         <div className="reveal mb-12">
-          <div className="section-label mb-3">02 / Skills</div>
+          <div className="section-label mb-3">02 / Навыки</div>
           <h2
             className="text-3xl sm:text-4xl font-bold text-white"
             style={{ fontFamily: "'Space Grotesk', sans-serif" }}
           >
-            Technical Expertise
+            Техническая экспертиза
           </h2>
           <hr className="teal-rule mt-4 max-w-xs" />
         </div>
@@ -170,7 +170,7 @@ export default function Skills() {
 
         {/* Tech tags */}
         <div className="reveal" style={{ transitionDelay: "0.3s" }}>
-          <div className="section-label mb-5">Tech Stack</div>
+          <div className="section-label mb-5">Стек технологий</div>
           <div className="flex flex-wrap gap-2">
             {techTags.map((tag: string) => (
               <span

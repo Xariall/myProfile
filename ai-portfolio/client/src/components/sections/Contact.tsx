@@ -66,18 +66,18 @@ export default function Contact() {
       <div className="container relative z-10">
         {/* Section header */}
         <div className="reveal mb-12 text-center">
-          <div className="section-label justify-center mb-3">06 / Contact</div>
+          <div className="section-label justify-center mb-3">06 / Контакты</div>
           <h2
             className="text-3xl sm:text-4xl font-bold text-white mb-4"
             style={{ fontFamily: "'Space Grotesk', sans-serif" }}
           >
-            Let's Work Together
+            Давайте работать вместе
           </h2>
           <p
             className="text-[#9BA3B2] max-w-lg mx-auto text-base leading-relaxed"
             style={{ fontFamily: "'DM Sans', sans-serif" }}
           >
-            Whether you have a project in mind, a research collaboration, or just want to connect — I'm always open to interesting conversations.
+            Есть проект, идея для сотрудничества или просто хотите пообщаться — я всегда открыт к интересным разговорам.
           </p>
         </div>
 
@@ -135,13 +135,13 @@ export default function Contact() {
         <div className="reveal flex flex-col sm:flex-row items-center justify-between gap-4" style={{ transitionDelay: "0.3s" }}>
           <div className="flex items-center gap-2 text-sm text-[#4A5568]" style={{ fontFamily: "'DM Sans', sans-serif" }}>
             <MapPin size={13} className="text-[#0ABFBC]" />
-            Based in Your City, Country · Available for remote work worldwide
+            Город, Страна · Готов к удалённой работе
           </div>
           <div
             className="text-xs text-[#4A5568]"
             style={{ fontFamily: "'JetBrains Mono', monospace" }}
           >
-            Response time: usually within 24h
+            Время ответа: обычно в течение 24ч
           </div>
         </div>
       </div>

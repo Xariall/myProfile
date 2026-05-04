@@ -3,6 +3,15 @@
  * Minimal footer with nav links and copyright
  */
 
+const FOOTER_LABELS: Record<string, string> = {
+  about: "Обо мне",
+  skills: "Навыки",
+  projects: "Проекты",
+  experience: "Опыт",
+  education: "Образование",
+  contact: "Контакты",
+};
+
 export default function Footer() {
   const year = new Date().getFullYear();
 
@@ -36,7 +45,7 @@ export default function Footer() {
             className="text-xs text-[#4A5568]"
             style={{ fontFamily: "'JetBrains Mono', monospace" }}
           >
-            © {year} Your Name. All rights reserved.
+            © {year} Ваше Имя. Все права защищены.
           </span>
         </div>
 
@@ -47,10 +56,10 @@ export default function Footer() {
               key={href}
               href={href}
               onClick={(e) => { e.preventDefault(); handleNav(href); }}
-              className="text-xs text-[#4A5568] hover:text-[#0ABFBC] transition-colors duration-200 capitalize"
+              className="text-xs text-[#4A5568] hover:text-[#0ABFBC] transition-colors duration-200"
               style={{ fontFamily: "'DM Sans', sans-serif" }}
             >
-              {href.slice(1)}
+              {FOOTER_LABELS[href.slice(1)] ?? href.slice(1)}
             </a>
           ))}
         </nav>

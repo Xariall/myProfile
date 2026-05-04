@@ -20,7 +20,7 @@ export default function BackToTop() {
   return (
     <button
       onClick={scrollToTop}
-      aria-label="Back to top"
+      aria-label="Наверх"
       className="fixed bottom-8 right-6 z-50 w-9 h-9 flex items-center justify-center rounded-sm transition-all duration-300"
       style={{
         background: "rgba(10,191,188,0.12)",

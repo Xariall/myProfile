@@ -11,7 +11,7 @@ import { usePortfolioData } from "@/hooks/usePortfolioData";
 const HERO_BG = "https://d2xsxph8kpxj0f.cloudfront.net/310519663524070095/fRirMRHo2JX8PN7S366szy/hero-bg-auFN3zviWi54ZNND6BFqn2.webp";
 const AVATAR = "https://d2xsxph8kpxj0f.cloudfront.net/310519663524070095/fRirMRHo2JX8PN7S366szy/avatar-placeholder-UGhAWQzuZUZq2wtxidCCpV.webp";
 
-const FALLBACK_ROLES = ["AI Engineer", "ML Researcher", "Deep Learning Specialist", "Data Scientist"];
+const FALLBACK_ROLES = ["AI-инженер", "ML-исследователь", "Специалист по глубокому обучению", "Data Scientist"];
 
 export default function Hero() {
   const data = usePortfolioData();
@@ -89,7 +89,7 @@ export default function Hero() {
               className={`section-label mb-6 transition-all duration-700 ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"}`}
               style={{ transitionDelay: "0.1s" }}
             >
-              {profile.hero_eyebrow || "Available for opportunities"}
+              {profile.hero_eyebrow || "Открыт к предложениям"}
             </div>
 
             {/* Name */}
@@ -125,7 +125,7 @@ export default function Hero() {
               className={`text-base sm:text-lg text-[#9BA3B2] max-w-lg leading-relaxed mb-8 transition-all duration-700 ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"}`}
               style={{ transitionDelay: "0.45s", fontFamily: "'DM Sans', sans-serif" }}
             >
-              {profile.hero_tagline || "Building intelligent systems at the intersection of research and production. Passionate about turning complex models into real-world impact."}
+              {profile.hero_tagline || "Создаю интеллектуальные системы на стыке исследований и продакшена. Превращаю сложные модели в реальный бизнес-результат."}
             </p>
 
             {/* CTA Buttons */}
@@ -141,7 +141,7 @@ export default function Hero() {
                 className="px-6 py-3 text-sm font-semibold rounded-sm transition-all duration-200 hover:shadow-lg hover:scale-[1.02]"
                 style={{ background: "var(--teal)", color: "#0D0F14", fontFamily: "'Space Grotesk', sans-serif" }}
               >
-                View Projects
+                Смотреть проекты
               </button>
               <button
                 onClick={() => {
@@ -156,7 +156,7 @@ export default function Hero() {
                   background: "transparent",
                 }}
               >
-                Get in Touch
+                Связаться
               </button>
             </div>
 
@@ -231,7 +231,7 @@ export default function Hero() {
                 }}
               >
                 <span className="w-1.5 h-1.5 rounded-full bg-[#0ABFBC] animate-pulse" />
-                Open to work
+                Открыт к работе
               </div>
             </div>
           </div>
@@ -243,7 +243,7 @@ export default function Hero() {
           style={{ transitionDelay: "1s" }}
           onClick={scrollToAbout}
         >
-          <span className="text-xs text-[#4A5568]" style={{ fontFamily: "'JetBrains Mono', monospace" }}>scroll</span>
+          <span className="text-xs text-[#4A5568]" style={{ fontFamily: "'JetBrains Mono', monospace" }}>листай</span>
           <ArrowDown size={14} className="text-[#0ABFBC] animate-bounce" />
         </div>
       </div>

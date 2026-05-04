@@ -52,12 +52,12 @@ export default function Experience() {
       <div className="container">
         {/* Section header */}
         <div className="reveal mb-14">
-          <div className="section-label mb-3">04 / Experience</div>
+          <div className="section-label mb-3">04 / Опыт</div>
           <h2
             className="text-3xl sm:text-4xl font-bold text-white"
             style={{ fontFamily: "'Space Grotesk', sans-serif" }}
           >
-            Work History
+            История работы
           </h2>
           <hr className="teal-rule mt-4 max-w-xs" />
         </div>

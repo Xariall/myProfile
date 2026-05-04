@@ -8,12 +8,12 @@ import { useState, useEffect } from "react";
 import { Menu, X } from "lucide-react";
 
 const NAV_LINKS = [
-  { label: "About", href: "#about" },
-  { label: "Skills", href: "#skills" },
-  { label: "Projects", href: "#projects" },
-  { label: "Experience", href: "#experience" },
-  { label: "Education", href: "#education" },
-  { label: "Contact", href: "#contact" },
+  { label: "Обо мне", href: "#about" },
+  { label: "Навыки", href: "#skills" },
+  { label: "Проекты", href: "#projects" },
+  { label: "Опыт", href: "#experience" },
+  { label: "Образование", href: "#education" },
+  { label: "Контакты", href: "#contact" },
 ];
 
 export default function Navbar() {
@@ -78,7 +78,7 @@ export default function Navbar() {
             className="font-bold text-sm tracking-wide"
             style={{ fontFamily: "'Space Grotesk', sans-serif", color: "#E8EAF0" }}
           >
-            Portfolio
+            Портфолио
           </span>
         </a>
 
@@ -117,7 +117,7 @@ export default function Navbar() {
               color: "#0D0F14",
             }}
           >
-            Hire Me
+            Нанять меня
           </a>
         </nav>
 
@@ -156,7 +156,7 @@ export default function Navbar() {
             className="mt-2 px-4 py-2.5 text-sm font-semibold rounded-sm text-center"
             style={{ background: "var(--teal)", color: "#0D0F14", fontFamily: "'Space Grotesk', sans-serif" }}
           >
-            Hire Me
+            Нанять меня
           </a>
         </nav>
       </div>

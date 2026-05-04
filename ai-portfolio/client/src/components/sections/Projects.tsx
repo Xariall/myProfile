@@ -75,7 +75,7 @@ function ProjectCard({ project }: { project: Project }) {
           }}
         >
           <Star size={10} />
-          Featured
+          Избранное
         </div>
       )}
 
@@ -187,13 +187,13 @@ export default function Projects() {
   const projects: Project[] = data.projects?.length ? data.projects : [];
   const categoryTabs = useMemo(() => {
     const cats = Array.from(new Set(projects.map((p) => p.category)));
-    return ["All", ...cats];
+    return ["Все", ...cats];
   }, [projects]);
 
   const sectionRef = useRef<HTMLElement>(null);
-  const [activeCategory, setActiveCategory] = useState("All");
+  const [activeCategory, setActiveCategory] = useState("Все");
 
-  const filtered = activeCategory === "All"
+  const filtered = activeCategory === "Все"
     ? projects
     : projects.filter((p) => p.category === activeCategory);
 
@@ -224,12 +224,12 @@ export default function Projects() {
       <div className="container">
         {/* Section header */}
         <div className="reveal mb-10">
-          <div className="section-label mb-3">03 / Projects</div>
+          <div className="section-label mb-3">03 / Проекты</div>
           <h2
             className="text-3xl sm:text-4xl font-bold text-white"
             style={{ fontFamily: "'Space Grotesk', sans-serif" }}
           >
-            Selected Work
+            Избранные работы
           </h2>
           <hr className="teal-rule mt-4 max-w-xs" />
         </div>
@@ -274,7 +274,7 @@ export default function Projects() {
             className="inline-flex items-center gap-2 text-sm font-semibold text-[#0ABFBC] hover:text-white transition-colors duration-200 group"
             style={{ fontFamily: "'Space Grotesk', sans-serif" }}
           >
-            View all projects on GitHub
+            Все проекты на GitHub
             <span className="group-hover:translate-x-1 transition-transform duration-200">→</span>
           </a>
         </div>
