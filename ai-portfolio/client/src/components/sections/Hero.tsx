@@ -8,10 +8,17 @@ import { useEffect, useState } from "react";
 import { ArrowDown, Github, Linkedin, Twitter } from "lucide-react";
 import { usePortfolioData } from "@/hooks/usePortfolioData";
 
-const HERO_BG = "https://d2xsxph8kpxj0f.cloudfront.net/310519663524070095/fRirMRHo2JX8PN7S366szy/hero-bg-auFN3zviWi54ZNND6BFqn2.webp";
-const AVATAR = "https://d2xsxph8kpxj0f.cloudfront.net/310519663524070095/fRirMRHo2JX8PN7S366szy/avatar-placeholder-UGhAWQzuZUZq2wtxidCCpV.webp";
+const HERO_BG =
+  "https://d2xsxph8kpxj0f.cloudfront.net/310519663524070095/fRirMRHo2JX8PN7S366szy/hero-bg-auFN3zviWi54ZNND6BFqn2.webp";
+const AVATAR =
+  "https://d2xsxph8kpxj0f.cloudfront.net/310519663524070095/fRirMRHo2JX8PN7S366szy/avatar-placeholder-UGhAWQzuZUZq2wtxidCCpV.webp";
 
-const FALLBACK_ROLES = ["AI-инженер", "ML-исследователь", "Специалист по глубокому обучению", "Data Scientist"];
+const FALLBACK_ROLES = [
+  "AI-инженер",
+  "ML-исследователь",
+  "Специалист по глубокому обучению",
+  "Data Scientist",
+];
 
 export default function Hero() {
   const data = usePortfolioData();
@@ -31,7 +38,7 @@ export default function Hero() {
     const interval = setInterval(() => {
       setFadeRole(false);
       setTimeout(() => {
-        setRoleIndex((i) => (i + 1) % roles.length);
+        setRoleIndex(i => (i + 1) % roles.length);
         setFadeRole(true);
       }, 350);
     }, 3000);
@@ -75,7 +82,8 @@ export default function Hero() {
       <div
         className="absolute inset-0"
         style={{
-          background: "linear-gradient(105deg, #0D0F14 40%, rgba(13,15,20,0.6) 65%, rgba(13,15,20,0.2) 100%)",
+          background:
+            "linear-gradient(105deg, #0D0F14 40%, rgba(13,15,20,0.6) 65%, rgba(13,15,20,0.2) 100%)",
         }}
       />
 
@@ -95,7 +103,11 @@ export default function Hero() {
             {/* Name */}
             <h1
               className={`text-5xl sm:text-6xl lg:text-7xl font-extrabold text-white mb-3 transition-all duration-700 ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"}`}
-              style={{ fontFamily: "'Space Grotesk', sans-serif", transitionDelay: "0.2s", letterSpacing: "-0.03em" }}
+              style={{
+                fontFamily: "'Space Grotesk', sans-serif",
+                transitionDelay: "0.2s",
+                letterSpacing: "-0.03em",
+              }}
             >
               {profile.hero_name || "Your Name"}
             </h1>
@@ -123,9 +135,13 @@ export default function Hero() {
             {/* Tagline */}
             <p
               className={`text-base sm:text-lg text-[#9BA3B2] max-w-lg leading-relaxed mb-8 transition-all duration-700 ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"}`}
-              style={{ transitionDelay: "0.45s", fontFamily: "'DM Sans', sans-serif" }}
+              style={{
+                transitionDelay: "0.45s",
+                fontFamily: "'DM Sans', sans-serif",
+              }}
             >
-              {profile.hero_tagline || "Создаю интеллектуальные системы на стыке исследований и продакшена. Превращаю сложные модели в реальный бизнес-результат."}
+              {profile.hero_tagline ||
+                "Создаю интеллектуальные системы на стыке исследований и продакшена. Превращаю сложные модели в реальный бизнес-результат."}
             </p>
 
             {/* CTA Buttons */}
@@ -136,17 +152,29 @@ export default function Hero() {
               <button
                 onClick={() => {
                   const el = document.getElementById("projects");
-                  if (el) window.scrollTo({ top: el.getBoundingClientRect().top + window.scrollY - 72, behavior: "smooth" });
+                  if (el)
+                    window.scrollTo({
+                      top: el.getBoundingClientRect().top + window.scrollY - 72,
+                      behavior: "smooth",
+                    });
                 }}
                 className="px-6 py-3 text-sm font-semibold rounded-sm transition-all duration-200 hover:shadow-lg hover:scale-[1.02]"
-                style={{ background: "var(--teal)", color: "#0D0F14", fontFamily: "'Space Grotesk', sans-serif" }}
+                style={{
+                  background: "var(--teal)",
+                  color: "#0D0F14",
+                  fontFamily: "'Space Grotesk', sans-serif",
+                }}
               >
                 Смотреть проекты
               </button>
               <button
                 onClick={() => {
                   const el = document.getElementById("contact");
-                  if (el) window.scrollTo({ top: el.getBoundingClientRect().top + window.scrollY - 72, behavior: "smooth" });
+                  if (el)
+                    window.scrollTo({
+                      top: el.getBoundingClientRect().top + window.scrollY - 72,
+                      behavior: "smooth",
+                    });
                 }}
                 className="px-6 py-3 text-sm font-semibold rounded-sm border transition-all duration-200 hover:border-[#0ABFBC]/60 hover:text-[#0ABFBC]"
                 style={{
@@ -166,21 +194,35 @@ export default function Hero() {
               style={{ transitionDelay: "0.65s" }}
             >
               {[
-                { icon: Github, label: "GitHub", href: profile.github_url || "#" },
-                { icon: Linkedin, label: "LinkedIn", href: profile.linkedin_url || "#" },
-                { icon: Twitter, label: "Twitter", href: profile.twitter_url || "#" },
-              ].filter(s => s.href && s.href !== "#").map(({ icon: Icon, label, href }) => (
-                <a
-                  key={label}
-                  href={href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label={label}
-                  className="w-9 h-9 flex items-center justify-center rounded-sm border border-white/10 text-[#9BA3B2] hover:text-[#0ABFBC] hover:border-[#0ABFBC]/40 transition-all duration-200"
-                >
-                  <Icon size={16} />
-                </a>
-              ))}
+                {
+                  icon: Github,
+                  label: "GitHub",
+                  href: profile.github_url || "#",
+                },
+                {
+                  icon: Linkedin,
+                  label: "LinkedIn",
+                  href: profile.linkedin_url || "#",
+                },
+                {
+                  icon: Twitter,
+                  label: "Twitter",
+                  href: profile.twitter_url || "#",
+                },
+              ]
+                .filter(s => s.href && s.href !== "#")
+                .map(({ icon: Icon, label, href }) => (
+                  <a
+                    key={label}
+                    href={href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={label}
+                    className="w-9 h-9 flex items-center justify-center rounded-sm border border-white/10 text-[#9BA3B2] hover:text-[#0ABFBC] hover:border-[#0ABFBC]/40 transition-all duration-200"
+                  >
+                    <Icon size={16} />
+                  </a>
+                ))}
             </div>
           </div>
 
@@ -211,7 +253,8 @@ export default function Hero() {
                 className="absolute inset-8 rounded-full overflow-hidden"
                 style={{
                   border: "2px solid rgba(10,191,188,0.3)",
-                  boxShadow: "0 0 40px rgba(10,191,188,0.12), 0 0 80px rgba(10,191,188,0.05)",
+                  boxShadow:
+                    "0 0 40px rgba(10,191,188,0.12), 0 0 80px rgba(10,191,188,0.05)",
                 }}
               >
                 <img
@@ -243,7 +286,12 @@ export default function Hero() {
           style={{ transitionDelay: "1s" }}
           onClick={scrollToAbout}
         >
-          <span className="text-xs text-[#4A5568]" style={{ fontFamily: "'JetBrains Mono', monospace" }}>листай</span>
+          <span
+            className="text-xs text-[#4A5568]"
+            style={{ fontFamily: "'JetBrains Mono', monospace" }}
+          >
+            листай
+          </span>
           <ArrowDown size={14} className="text-[#0ABFBC] animate-bounce" />
         </div>
       </div>

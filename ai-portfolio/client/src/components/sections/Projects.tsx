@@ -8,7 +8,8 @@ import { useRef, useEffect, useState, useMemo } from "react";
 import { ExternalLink, Github, Star } from "lucide-react";
 import { usePortfolioData } from "@/hooks/usePortfolioData";
 
-const CARD_BG = "https://d2xsxph8kpxj0f.cloudfront.net/310519663524070095/fRirMRHo2JX8PN7S366szy/project-card-bg-UcNzAKVdr7ZtoK9XuEaCDB.webp";
+const CARD_BG =
+  "https://d2xsxph8kpxj0f.cloudfront.net/310519663524070095/fRirMRHo2JX8PN7S366szy/project-card-bg-UcNzAKVdr7ZtoK9XuEaCDB.webp";
 
 type Project = {
   id: string;
@@ -47,8 +48,11 @@ function ProjectCard({ project }: { project: Project }) {
       style={{
         background: "#161A22",
         border: `1px solid ${hovered ? "rgba(10,191,188,0.35)" : "rgba(255,255,255,0.06)"}`,
-        transition: "border-color 0.25s ease, box-shadow 0.25s ease, transform 0.25s ease",
-        boxShadow: hovered ? "0 0 24px rgba(10,191,188,0.08), 0 8px 32px rgba(0,0,0,0.4)" : "none",
+        transition:
+          "border-color 0.25s ease, box-shadow 0.25s ease, transform 0.25s ease",
+        boxShadow: hovered
+          ? "0 0 24px rgba(10,191,188,0.08), 0 8px 32px rgba(0,0,0,0.4)"
+          : "none",
         transform: hovered ? "translateY(-3px)" : "none",
       }}
       onMouseEnter={() => setHovered(true)}
@@ -121,7 +125,7 @@ function ProjectCard({ project }: { project: Project }) {
 
         {/* Tech tags */}
         <div className="flex flex-wrap gap-1.5 mb-4">
-          {project.tags.map((tag) => (
+          {project.tags.map(tag => (
             <span
               key={tag}
               className="px-2 py-0.5 text-xs rounded-sm"
@@ -158,7 +162,7 @@ function ProjectCard({ project }: { project: Project }) {
                 rel="noopener noreferrer"
                 className="text-[#4A5568] hover:text-[#0ABFBC] transition-colors duration-200"
                 aria-label="GitHub"
-                onClick={(e) => e.stopPropagation()}
+                onClick={e => e.stopPropagation()}
               >
                 <Github size={15} />
               </a>
@@ -170,7 +174,7 @@ function ProjectCard({ project }: { project: Project }) {
                 rel="noopener noreferrer"
                 className="text-[#4A5568] hover:text-[#0ABFBC] transition-colors duration-200"
                 aria-label="Live demo"
-                onClick={(e) => e.stopPropagation()}
+                onClick={e => e.stopPropagation()}
               >
                 <ExternalLink size={15} />
               </a>
@@ -186,21 +190,22 @@ export default function Projects() {
   const data = usePortfolioData();
   const projects: Project[] = data.projects?.length ? data.projects : [];
   const categoryTabs = useMemo(() => {
-    const cats = Array.from(new Set(projects.map((p) => p.category)));
+    const cats = Array.from(new Set(projects.map(p => p.category)));
     return ["Все", ...cats];
   }, [projects]);
 
   const sectionRef = useRef<HTMLElement>(null);
   const [activeCategory, setActiveCategory] = useState("Все");
 
-  const filtered = activeCategory === "Все"
-    ? projects
-    : projects.filter((p) => p.category === activeCategory);
+  const filtered =
+    activeCategory === "Все"
+      ? projects
+      : projects.filter(p => p.category === activeCategory);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
+      entries => {
+        entries.forEach(entry => {
           if (entry.isIntersecting) {
             entry.target.classList.add("visible");
             observer.unobserve(entry.target);
@@ -210,7 +215,7 @@ export default function Projects() {
       { threshold: 0.08 }
     );
     const els = sectionRef.current?.querySelectorAll(".reveal");
-    els?.forEach((el) => observer.observe(el));
+    els?.forEach(el => observer.observe(el));
     return () => observer.disconnect();
   }, []);
 
@@ -235,15 +240,21 @@ export default function Projects() {
         </div>
 
         {/* Category filter */}
-        <div className="reveal flex flex-wrap gap-2 mb-10" style={{ transitionDelay: "0.1s" }}>
-          {categoryTabs.map((cat) => (
+        <div
+          className="reveal flex flex-wrap gap-2 mb-10"
+          style={{ transitionDelay: "0.1s" }}
+        >
+          {categoryTabs.map(cat => (
             <button
               key={cat}
               onClick={() => setActiveCategory(cat)}
               className="px-3 py-1.5 text-xs rounded-sm transition-all duration-200"
               style={{
                 fontFamily: "'JetBrains Mono', monospace",
-                background: activeCategory === cat ? "var(--teal)" : "rgba(255,255,255,0.04)",
+                background:
+                  activeCategory === cat
+                    ? "var(--teal)"
+                    : "rgba(255,255,255,0.04)",
                 border: `1px solid ${activeCategory === cat ? "var(--teal)" : "rgba(255,255,255,0.08)"}`,
                 color: activeCategory === cat ? "#0D0F14" : "#9BA3B2",
                 fontWeight: activeCategory === cat ? 600 : 400,
@@ -268,14 +279,19 @@ export default function Projects() {
         </div>
 
         {/* View all link */}
-        <div className="reveal mt-10 text-center" style={{ transitionDelay: "0.4s" }}>
+        <div
+          className="reveal mt-10 text-center"
+          style={{ transitionDelay: "0.4s" }}
+        >
           <a
             href="#"
             className="inline-flex items-center gap-2 text-sm font-semibold text-[#0ABFBC] hover:text-white transition-colors duration-200 group"
             style={{ fontFamily: "'Space Grotesk', sans-serif" }}
           >
             Все проекты на GitHub
-            <span className="group-hover:translate-x-1 transition-transform duration-200">→</span>
+            <span className="group-hover:translate-x-1 transition-transform duration-200">
+              →
+            </span>
           </a>
         </div>
       </div>

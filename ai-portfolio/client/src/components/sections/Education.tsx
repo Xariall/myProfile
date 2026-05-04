@@ -27,14 +27,18 @@ type CertItem = {
 
 export default function EducationSection() {
   const data = usePortfolioData();
-  const education: EducationItem[] = data.education?.length ? data.education : [];
-  const certifications: CertItem[] = data.certifications?.length ? data.certifications : [];
+  const education: EducationItem[] = data.education?.length
+    ? data.education
+    : [];
+  const certifications: CertItem[] = data.certifications?.length
+    ? data.certifications
+    : [];
   const sectionRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
+      entries => {
+        entries.forEach(entry => {
           if (entry.isIntersecting) {
             entry.target.classList.add("visible");
             observer.unobserve(entry.target);
@@ -44,7 +48,7 @@ export default function EducationSection() {
       { threshold: 0.08 }
     );
     const els = sectionRef.current?.querySelectorAll(".reveal");
-    els?.forEach((el) => observer.observe(el));
+    els?.forEach(el => observer.observe(el));
     return () => observer.disconnect();
   }, []);
 
@@ -71,7 +75,10 @@ export default function EducationSection() {
         <div className="grid lg:grid-cols-2 gap-10 lg:gap-16">
           {/* Left: Education */}
           <div>
-            <div className="reveal flex items-center gap-2 mb-6" style={{ transitionDelay: "0.05s" }}>
+            <div
+              className="reveal flex items-center gap-2 mb-6"
+              style={{ transitionDelay: "0.05s" }}
+            >
               <GraduationCap size={18} className="text-[#0ABFBC]" />
               <h3
                 className="text-sm font-semibold text-[#E8EAF0] uppercase tracking-wider"
@@ -96,11 +103,17 @@ export default function EducationSection() {
                   <div className="flex items-start justify-between gap-3 mb-3">
                     <div
                       className="text-2xl font-extrabold"
-                      style={{ fontFamily: "'Space Grotesk', sans-serif", color: "var(--teal)" }}
+                      style={{
+                        fontFamily: "'Space Grotesk', sans-serif",
+                        color: "var(--teal)",
+                      }}
                     >
                       {edu.degree}
                     </div>
-                    <div className="flex items-center gap-1 text-xs text-[#9BA3B2]" style={{ fontFamily: "'JetBrains Mono', monospace" }}>
+                    <div
+                      className="flex items-center gap-1 text-xs text-[#9BA3B2]"
+                      style={{ fontFamily: "'JetBrains Mono', monospace" }}
+                    >
                       <Calendar size={11} />
                       {edu.period}
                     </div>
@@ -120,7 +133,10 @@ export default function EducationSection() {
                   </div>
 
                   {edu.gpa && (
-                    <div className="flex items-center gap-2 text-xs text-[#9BA3B2] mb-2" style={{ fontFamily: "'JetBrains Mono', monospace" }}>
+                    <div
+                      className="flex items-center gap-2 text-xs text-[#9BA3B2] mb-2"
+                      style={{ fontFamily: "'JetBrains Mono', monospace" }}
+                    >
                       <span className="text-[#4A5568]">GPA</span>
                       <span className="text-[#C4C9D4]">{edu.gpa}</span>
                     </div>
@@ -144,7 +160,10 @@ export default function EducationSection() {
 
           {/* Right: Certifications */}
           <div>
-            <div className="reveal flex items-center gap-2 mb-6" style={{ transitionDelay: "0.05s" }}>
+            <div
+              className="reveal flex items-center gap-2 mb-6"
+              style={{ transitionDelay: "0.05s" }}
+            >
               <Award size={18} className="text-[#0ABFBC]" />
               <h3
                 className="text-sm font-semibold text-[#E8EAF0] uppercase tracking-wider"
@@ -168,7 +187,10 @@ export default function EducationSection() {
                   {/* Badge icon */}
                   <div
                     className="w-10 h-10 rounded-sm flex items-center justify-center text-xl flex-shrink-0"
-                    style={{ background: "rgba(10,191,188,0.08)", border: "1px solid rgba(10,191,188,0.12)" }}
+                    style={{
+                      background: "rgba(10,191,188,0.08)",
+                      border: "1px solid rgba(10,191,188,0.12)",
+                    }}
                   >
                     {cert.badge}
                   </div>

@@ -17,14 +17,21 @@ type ContactLinkData = {
   color: string;
 };
 
-const ICON_MAP: Record<string, React.FC<{ size?: number; className?: string }>> = {
-  Mail, Github, Send, Linkedin, Twitter,
+const ICON_MAP: Record<
+  string,
+  React.FC<{ size?: number; className?: string }>
+> = {
+  Mail,
+  Github,
+  Send,
+  Linkedin,
+  Twitter,
 };
 
 export default function Contact() {
   const data = usePortfolioData();
   const rawLinks: ContactLinkData[] = data.contact_links || [];
-  const contactLinks = rawLinks.map((link) => ({
+  const contactLinks = rawLinks.map(link => ({
     ...link,
     icon: ICON_MAP[link.iconName] || Mail,
   }));
@@ -32,8 +39,8 @@ export default function Contact() {
 
   useEffect(() => {
     const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
+      entries => {
+        entries.forEach(entry => {
           if (entry.isIntersecting) {
             entry.target.classList.add("visible");
             observer.unobserve(entry.target);
@@ -43,7 +50,7 @@ export default function Contact() {
       { threshold: 0.08 }
     );
     const els = sectionRef.current?.querySelectorAll(".reveal");
-    els?.forEach((el) => observer.observe(el));
+    els?.forEach(el => observer.observe(el));
     return () => observer.disconnect();
   }, []);
 
@@ -58,7 +65,8 @@ export default function Contact() {
       <div
         className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[600px] h-[300px] rounded-full pointer-events-none"
         style={{
-          background: "radial-gradient(ellipse, rgba(10,191,188,0.06) 0%, transparent 70%)",
+          background:
+            "radial-gradient(ellipse, rgba(10,191,188,0.06) 0%, transparent 70%)",
           filter: "blur(40px)",
         }}
       />
@@ -77,63 +85,75 @@ export default function Contact() {
             className="text-[#9BA3B2] max-w-lg mx-auto text-base leading-relaxed"
             style={{ fontFamily: "'DM Sans', sans-serif" }}
           >
-            Есть проект, идея для сотрудничества или просто хотите пообщаться — я всегда открыт к интересным разговорам.
+            Есть проект, идея для сотрудничества или просто хотите пообщаться —
+            я всегда открыт к интересным разговорам.
           </p>
         </div>
 
         {/* Contact cards */}
-        <div className="reveal grid sm:grid-cols-2 lg:grid-cols-5 gap-4 mb-14" style={{ transitionDelay: "0.15s" }}>
-          {contactLinks.map(({ icon: Icon, label, value, href, description, color }) => (
-            <a
-              key={label}
-              href={href}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="group card-hover flex flex-col items-center text-center p-6 rounded-sm"
-              style={{
-                background: "#161A22",
-                border: "1px solid rgba(255,255,255,0.06)",
-                textDecoration: "none",
-              }}
-            >
-              <div
-                className="w-12 h-12 rounded-sm flex items-center justify-center mb-4 transition-all duration-200 group-hover:scale-110"
+        <div
+          className="reveal grid sm:grid-cols-2 lg:grid-cols-5 gap-4 mb-14"
+          style={{ transitionDelay: "0.15s" }}
+        >
+          {contactLinks.map(
+            ({ icon: Icon, label, value, href, description, color }) => (
+              <a
+                key={label}
+                href={href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group card-hover flex flex-col items-center text-center p-6 rounded-sm"
                 style={{
-                  background: `${color}14`,
-                  border: `1px solid ${color}28`,
-                  color: color,
+                  background: "#161A22",
+                  border: "1px solid rgba(255,255,255,0.06)",
+                  textDecoration: "none",
                 }}
               >
-                <Icon size={20} className="transition-colors duration-200" />
-              </div>
-              <div
-                className="text-sm font-semibold text-white mb-1 group-hover:text-[#0ABFBC] transition-colors duration-200"
-                style={{ fontFamily: "'Space Grotesk', sans-serif" }}
-              >
-                {label}
-              </div>
-              <div
-                className="text-xs text-[#0ABFBC] mb-2 font-medium"
-                style={{ fontFamily: "'JetBrains Mono', monospace" }}
-              >
-                {value}
-              </div>
-              <div
-                className="text-xs text-[#4A5568]"
-                style={{ fontFamily: "'DM Sans', sans-serif" }}
-              >
-                {description}
-              </div>
-            </a>
-          ))}
+                <div
+                  className="w-12 h-12 rounded-sm flex items-center justify-center mb-4 transition-all duration-200 group-hover:scale-110"
+                  style={{
+                    background: `${color}14`,
+                    border: `1px solid ${color}28`,
+                    color: color,
+                  }}
+                >
+                  <Icon size={20} className="transition-colors duration-200" />
+                </div>
+                <div
+                  className="text-sm font-semibold text-white mb-1 group-hover:text-[#0ABFBC] transition-colors duration-200"
+                  style={{ fontFamily: "'Space Grotesk', sans-serif" }}
+                >
+                  {label}
+                </div>
+                <div
+                  className="text-xs text-[#0ABFBC] mb-2 font-medium"
+                  style={{ fontFamily: "'JetBrains Mono', monospace" }}
+                >
+                  {value}
+                </div>
+                <div
+                  className="text-xs text-[#4A5568]"
+                  style={{ fontFamily: "'DM Sans', sans-serif" }}
+                >
+                  {description}
+                </div>
+              </a>
+            )
+          )}
         </div>
 
         {/* Divider */}
         <hr className="teal-rule mb-10" />
 
         {/* Bottom bar */}
-        <div className="reveal flex flex-col sm:flex-row items-center justify-between gap-4" style={{ transitionDelay: "0.3s" }}>
-          <div className="flex items-center gap-2 text-sm text-[#4A5568]" style={{ fontFamily: "'DM Sans', sans-serif" }}>
+        <div
+          className="reveal flex flex-col sm:flex-row items-center justify-between gap-4"
+          style={{ transitionDelay: "0.3s" }}
+        >
+          <div
+            className="flex items-center gap-2 text-sm text-[#4A5568]"
+            style={{ fontFamily: "'DM Sans', sans-serif" }}
+          >
             <MapPin size={13} className="text-[#0ABFBC]" />
             Город, Страна · Готов к удалённой работе
           </div>

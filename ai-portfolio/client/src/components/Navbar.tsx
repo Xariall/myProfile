@@ -26,7 +26,7 @@ export default function Navbar() {
       setScrolled(window.scrollY > 40);
 
       // Determine active section
-      const sections = NAV_LINKS.map((l) => l.href.slice(1));
+      const sections = NAV_LINKS.map(l => l.href.slice(1));
       for (let i = sections.length - 1; i >= 0; i--) {
         const el = document.getElementById(sections[i]);
         if (el) {
@@ -65,7 +65,10 @@ export default function Navbar() {
         {/* Logo / Name */}
         <a
           href="#hero"
-          onClick={(e) => { e.preventDefault(); handleNav("#hero"); }}
+          onClick={e => {
+            e.preventDefault();
+            handleNav("#hero");
+          }}
           className="flex items-center gap-2 group"
         >
           <span
@@ -76,7 +79,10 @@ export default function Navbar() {
           </span>
           <span
             className="font-bold text-sm tracking-wide"
-            style={{ fontFamily: "'Space Grotesk', sans-serif", color: "#E8EAF0" }}
+            style={{
+              fontFamily: "'Space Grotesk', sans-serif",
+              color: "#E8EAF0",
+            }}
           >
             Портфолио
           </span>
@@ -84,23 +90,30 @@ export default function Navbar() {
 
         {/* Desktop Nav */}
         <nav className="hidden md:flex items-center gap-1">
-          {NAV_LINKS.map((link) => {
+          {NAV_LINKS.map(link => {
             const id = link.href.slice(1);
             const isActive = active === id;
             return (
               <a
                 key={link.href}
                 href={link.href}
-                onClick={(e) => { e.preventDefault(); handleNav(link.href); }}
+                onClick={e => {
+                  e.preventDefault();
+                  handleNav(link.href);
+                }}
                 className={`relative px-3 py-1.5 text-sm font-medium transition-colors duration-200 rounded-sm group ${
-                  isActive ? "text-[#0ABFBC]" : "text-[#9BA3B2] hover:text-[#E8EAF0]"
+                  isActive
+                    ? "text-[#0ABFBC]"
+                    : "text-[#9BA3B2] hover:text-[#E8EAF0]"
                 }`}
                 style={{ fontFamily: "'DM Sans', sans-serif" }}
               >
                 {link.label}
                 <span
                   className={`absolute bottom-0 left-3 right-3 h-px transition-all duration-300 ${
-                    isActive ? "opacity-100" : "opacity-0 group-hover:opacity-40"
+                    isActive
+                      ? "opacity-100"
+                      : "opacity-0 group-hover:opacity-40"
                   }`}
                   style={{ background: "var(--teal)" }}
                 />
@@ -109,7 +122,10 @@ export default function Navbar() {
           })}
           <a
             href="#contact"
-            onClick={(e) => { e.preventDefault(); handleNav("#contact"); }}
+            onClick={e => {
+              e.preventDefault();
+              handleNav("#contact");
+            }}
             className="ml-3 px-4 py-1.5 text-sm font-semibold rounded-sm transition-all duration-200 hover:shadow-lg"
             style={{
               fontFamily: "'Space Grotesk', sans-serif",
@@ -136,14 +152,20 @@ export default function Navbar() {
         className={`md:hidden transition-all duration-300 overflow-hidden ${
           open ? "max-h-[400px] opacity-100" : "max-h-0 opacity-0"
         }`}
-        style={{ background: "#0D0F14", borderBottom: "1px solid rgba(255,255,255,0.06)" }}
+        style={{
+          background: "#0D0F14",
+          borderBottom: "1px solid rgba(255,255,255,0.06)",
+        }}
       >
         <nav className="container py-4 flex flex-col gap-1">
-          {NAV_LINKS.map((link) => (
+          {NAV_LINKS.map(link => (
             <a
               key={link.href}
               href={link.href}
-              onClick={(e) => { e.preventDefault(); handleNav(link.href); }}
+              onClick={e => {
+                e.preventDefault();
+                handleNav(link.href);
+              }}
               className="px-3 py-2.5 text-sm font-medium text-[#9BA3B2] hover:text-[#0ABFBC] transition-colors rounded-sm hover:bg-white/4"
               style={{ fontFamily: "'DM Sans', sans-serif" }}
             >
@@ -152,9 +174,16 @@ export default function Navbar() {
           ))}
           <a
             href="#contact"
-            onClick={(e) => { e.preventDefault(); handleNav("#contact"); }}
+            onClick={e => {
+              e.preventDefault();
+              handleNav("#contact");
+            }}
             className="mt-2 px-4 py-2.5 text-sm font-semibold rounded-sm text-center"
-            style={{ background: "var(--teal)", color: "#0D0F14", fontFamily: "'Space Grotesk', sans-serif" }}
+            style={{
+              background: "var(--teal)",
+              color: "#0D0F14",
+              fontFamily: "'Space Grotesk', sans-serif",
+            }}
           >
             Нанять меня
           </a>

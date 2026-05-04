@@ -22,13 +22,15 @@ type ExperienceItem = {
 
 export default function Experience() {
   const data = usePortfolioData();
-  const experiences: ExperienceItem[] = data.experience?.length ? data.experience : [];
+  const experiences: ExperienceItem[] = data.experience?.length
+    ? data.experience
+    : [];
   const sectionRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
+      entries => {
+        entries.forEach(entry => {
           if (entry.isIntersecting) {
             entry.target.classList.add("visible");
             observer.unobserve(entry.target);
@@ -38,7 +40,7 @@ export default function Experience() {
       { threshold: 0.08 }
     );
     const els = sectionRef.current?.querySelectorAll(".reveal");
-    els?.forEach((el) => observer.observe(el));
+    els?.forEach(el => observer.observe(el));
     return () => observer.disconnect();
   }, []);
 
@@ -68,7 +70,8 @@ export default function Experience() {
           <div
             className="absolute left-5 lg:left-1/2 top-0 bottom-0 w-px"
             style={{
-              background: "linear-gradient(180deg, rgba(10,191,188,0.4) 0%, rgba(10,191,188,0.1) 60%, transparent 100%)",
+              background:
+                "linear-gradient(180deg, rgba(10,191,188,0.4) 0%, rgba(10,191,188,0.1) 60%, transparent 100%)",
               transform: "translateX(-50%)",
             }}
           />
@@ -172,7 +175,9 @@ export default function Experience() {
                           className="flex items-start gap-2 text-sm text-[#C4C9D4]"
                           style={{ fontFamily: "'DM Sans', sans-serif" }}
                         >
-                          <span className="text-[#0ABFBC] mt-1 flex-shrink-0">▸</span>
+                          <span className="text-[#0ABFBC] mt-1 flex-shrink-0">
+                            ▸
+                          </span>
                           {ach}
                         </li>
                       ))}
@@ -180,7 +185,7 @@ export default function Experience() {
 
                     {/* Tags */}
                     <div className="flex flex-wrap gap-1.5">
-                      {exp.tags.map((tag) => (
+                      {exp.tags.map(tag => (
                         <span
                           key={tag}
                           className="px-2 py-0.5 text-xs rounded-sm"

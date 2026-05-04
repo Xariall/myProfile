@@ -30,8 +30,8 @@ export default function About() {
 
   useEffect(() => {
     const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
+      entries => {
+        entries.forEach(entry => {
           if (entry.isIntersecting) {
             entry.target.classList.add("visible");
             observer.unobserve(entry.target);
@@ -41,7 +41,7 @@ export default function About() {
       { threshold: 0.1 }
     );
     const els = sectionRef.current?.querySelectorAll(".reveal");
-    els?.forEach((el) => observer.observe(el));
+    els?.forEach(el => observer.observe(el));
     return () => observer.disconnect();
   }, []);
 
@@ -68,27 +68,71 @@ export default function About() {
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-start">
           {/* Left: Bio text */}
           <div className="space-y-5">
-            <p className="reveal text-[#C4C9D4] leading-relaxed text-base" style={{ fontFamily: "'DM Sans', sans-serif", transitionDelay: "0.1s" }}>
-              {profile.about_lead || <>Привет, я <span className="text-white font-semibold">Ваше Имя</span> — AI-инженер, увлечённый созданием интеллектуальных систем на стыке передовых исследований и реальных приложений.</>}
+            <p
+              className="reveal text-[#C4C9D4] leading-relaxed text-base"
+              style={{
+                fontFamily: "'DM Sans', sans-serif",
+                transitionDelay: "0.1s",
+              }}
+            >
+              {profile.about_lead || (
+                <>
+                  Привет, я{" "}
+                  <span className="text-white font-semibold">Ваше Имя</span> —
+                  AI-инженер, увлечённый созданием интеллектуальных систем на
+                  стыке передовых исследований и реальных приложений.
+                </>
+              )}
             </p>
-            {(profile.about_body || "").split("\n").filter(Boolean).map((para: string, i: number) => (
-              <p key={i} className="reveal text-[#9BA3B2] leading-relaxed text-base" style={{ fontFamily: "'DM Sans', sans-serif", transitionDelay: `${0.2 + i * 0.1}s` }}>
-                {para}
-              </p>
-            ))}
+            {(profile.about_body || "")
+              .split("\n")
+              .filter(Boolean)
+              .map((para: string, i: number) => (
+                <p
+                  key={i}
+                  className="reveal text-[#9BA3B2] leading-relaxed text-base"
+                  style={{
+                    fontFamily: "'DM Sans', sans-serif",
+                    transitionDelay: `${0.2 + i * 0.1}s`,
+                  }}
+                >
+                  {para}
+                </p>
+              ))}
             {!profile.about_body && (
               <>
-                <p className="reveal text-[#9BA3B2] leading-relaxed text-base" style={{ fontFamily: "'DM Sans', sans-serif", transitionDelay: "0.2s" }}>
-                  Моя работа охватывает полный ML-цикл: от разведочного анализа данных и проектирования архитектуры моделей до обучения на больших масштабах, оценки качества и развёртывания надёжных производственных пайплайнов.
+                <p
+                  className="reveal text-[#9BA3B2] leading-relaxed text-base"
+                  style={{
+                    fontFamily: "'DM Sans', sans-serif",
+                    transitionDelay: "0.2s",
+                  }}
+                >
+                  Моя работа охватывает полный ML-цикл: от разведочного анализа
+                  данных и проектирования архитектуры моделей до обучения на
+                  больших масштабах, оценки качества и развёртывания надёжных
+                  производственных пайплайнов.
                 </p>
-                <p className="reveal text-[#9BA3B2] leading-relaxed text-base" style={{ fontFamily: "'DM Sans', sans-serif", transitionDelay: "0.3s" }}>
-                  В свободное от обучения моделей время участвую в open-source проектах, пишу технические статьи и изучаю последние достижения в области Foundation Models, обучения с подкреплением и мультимодального AI.
+                <p
+                  className="reveal text-[#9BA3B2] leading-relaxed text-base"
+                  style={{
+                    fontFamily: "'DM Sans', sans-serif",
+                    transitionDelay: "0.3s",
+                  }}
+                >
+                  В свободное от обучения моделей время участвую в open-source
+                  проектах, пишу технические статьи и изучаю последние
+                  достижения в области Foundation Models, обучения с
+                  подкреплением и мультимодального AI.
                 </p>
               </>
             )}
 
             {/* Highlights */}
-            <div className="reveal grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2" style={{ transitionDelay: "0.4s" }}>
+            <div
+              className="reveal grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2"
+              style={{ transitionDelay: "0.4s" }}
+            >
               {HIGHLIGHTS.map(({ icon: Icon, text }) => (
                 <div
                   key={text}
@@ -108,13 +152,18 @@ export default function About() {
                 style={{ fontFamily: "'Space Grotesk', sans-serif" }}
               >
                 Скачать резюме
-                <span className="group-hover:translate-x-1 transition-transform duration-200">→</span>
+                <span className="group-hover:translate-x-1 transition-transform duration-200">
+                  →
+                </span>
               </a>
             </div>
           </div>
 
           {/* Right: Stats */}
-          <div className="reveal grid grid-cols-2 gap-4" style={{ transitionDelay: "0.2s" }}>
+          <div
+            className="reveal grid grid-cols-2 gap-4"
+            style={{ transitionDelay: "0.2s" }}
+          >
             {stats.map(({ value, label }: { value: string; label: string }) => (
               <div
                 key={label}
@@ -126,7 +175,10 @@ export default function About() {
               >
                 <div
                   className="text-3xl font-extrabold mb-1"
-                  style={{ fontFamily: "'Space Grotesk', sans-serif", color: "var(--teal)" }}
+                  style={{
+                    fontFamily: "'Space Grotesk', sans-serif",
+                    color: "var(--teal)",
+                  }}
                 >
                   {value}
                 </div>
@@ -154,10 +206,16 @@ export default function About() {
                 <Globe size={18} className="text-[#0ABFBC]" />
               </div>
               <div>
-                <div className="text-sm font-semibold text-white" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
+                <div
+                  className="text-sm font-semibold text-white"
+                  style={{ fontFamily: "'Space Grotesk', sans-serif" }}
+                >
                   Город, Страна
                 </div>
-                <div className="text-xs text-[#9BA3B2]" style={{ fontFamily: "'DM Sans', sans-serif" }}>
+                <div
+                  className="text-xs text-[#9BA3B2]"
+                  style={{ fontFamily: "'DM Sans', sans-serif" }}
+                >
                   Готов к удалённой работе и релокации
                 </div>
               </div>

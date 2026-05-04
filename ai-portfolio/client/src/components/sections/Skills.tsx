@@ -7,7 +7,8 @@
 import { useRef, useEffect } from "react";
 import { usePortfolioData } from "@/hooks/usePortfolioData";
 
-const SKILLS_BG = "https://d2xsxph8kpxj0f.cloudfront.net/310519663524070095/fRirMRHo2JX8PN7S366szy/skills-bg-JDFQqP7JrLQxSNS4rdKwwG.webp";
+const SKILLS_BG =
+  "https://d2xsxph8kpxj0f.cloudfront.net/310519663524070095/fRirMRHo2JX8PN7S366szy/skills-bg-JDFQqP7JrLQxSNS4rdKwwG.webp";
 
 type Skill = { name: string; level: number };
 
@@ -19,18 +20,66 @@ type Category = {
 };
 
 const FALLBACK_CATEGORIES: Category[] = [
-  { id: "ml", label: "Машинное обучение", icon: "🧠", skills: [{ name: "Глубокое обучение", level: 90 }, { name: "NLP / LLM", level: 88 }] },
-  { id: "frameworks", label: "Фреймворки и библиотеки", icon: "⚙️", skills: [{ name: "PyTorch", level: 92 }, { name: "TensorFlow / Keras", level: 80 }] },
-  { id: "mlops", label: "MLOps и инфраструктура", icon: "🚀", skills: [{ name: "Docker / Kubernetes", level: 78 }, { name: "MLflow / W&B", level: 82 }] },
-  { id: "languages", label: "Языки и инструменты", icon: "💻", skills: [{ name: "Python", level: 95 }, { name: "SQL", level: 80 }] },
+  {
+    id: "ml",
+    label: "Машинное обучение",
+    icon: "🧠",
+    skills: [
+      { name: "Глубокое обучение", level: 90 },
+      { name: "NLP / LLM", level: 88 },
+    ],
+  },
+  {
+    id: "frameworks",
+    label: "Фреймворки и библиотеки",
+    icon: "⚙️",
+    skills: [
+      { name: "PyTorch", level: 92 },
+      { name: "TensorFlow / Keras", level: 80 },
+    ],
+  },
+  {
+    id: "mlops",
+    label: "MLOps и инфраструктура",
+    icon: "🚀",
+    skills: [
+      { name: "Docker / Kubernetes", level: 78 },
+      { name: "MLflow / W&B", level: 82 },
+    ],
+  },
+  {
+    id: "languages",
+    label: "Языки и инструменты",
+    icon: "💻",
+    skills: [
+      { name: "Python", level: 95 },
+      { name: "SQL", level: 80 },
+    ],
+  },
 ];
 
 const FALLBACK_TAGS = [
-  "PyTorch", "TensorFlow", "HuggingFace", "LangChain", "OpenAI API",
-  "FastAPI", "Docker", "Kubernetes", "MLflow", "Weights & Biases",
+  "PyTorch",
+  "TensorFlow",
+  "HuggingFace",
+  "LangChain",
+  "OpenAI API",
+  "FastAPI",
+  "Docker",
+  "Kubernetes",
+  "MLflow",
+  "Weights & Biases",
 ];
 
-function SkillBar({ name, level, delay = 0 }: { name: string; level: number; delay?: number }) {
+function SkillBar({
+  name,
+  level,
+  delay = 0,
+}: {
+  name: string;
+  level: number;
+  delay?: number;
+}) {
   const barRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -55,7 +104,10 @@ function SkillBar({ name, level, delay = 0 }: { name: string; level: number; del
   return (
     <div ref={barRef} className="space-y-1.5">
       <div className="flex justify-between items-center">
-        <span className="text-sm text-[#C4C9D4]" style={{ fontFamily: "'DM Sans', sans-serif" }}>
+        <span
+          className="text-sm text-[#C4C9D4]"
+          style={{ fontFamily: "'DM Sans', sans-serif" }}
+        >
           {name}
         </span>
         <span
@@ -83,14 +135,16 @@ function SkillBar({ name, level, delay = 0 }: { name: string; level: number; del
 
 export default function Skills() {
   const data = usePortfolioData();
-  const categories: Category[] = data.skills?.length ? data.skills : FALLBACK_CATEGORIES;
+  const categories: Category[] = data.skills?.length
+    ? data.skills
+    : FALLBACK_CATEGORIES;
   const techTags: string[] = data.pills?.length ? data.pills : FALLBACK_TAGS;
   const sectionRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
+      entries => {
+        entries.forEach(entry => {
           if (entry.isIntersecting) {
             entry.target.classList.add("visible");
             observer.unobserve(entry.target);
@@ -100,7 +154,7 @@ export default function Skills() {
       { threshold: 0.08 }
     );
     const els = sectionRef.current?.querySelectorAll(".reveal");
-    els?.forEach((el) => observer.observe(el));
+    els?.forEach(el => observer.observe(el));
     return () => observer.disconnect();
   }, []);
 

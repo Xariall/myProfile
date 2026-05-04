@@ -51,11 +51,21 @@ export default function Footer() {
 
         {/* Quick links */}
         <nav className="flex items-center gap-4">
-          {["#about", "#skills", "#projects", "#experience", "#education", "#contact"].map((href) => (
+          {[
+            "#about",
+            "#skills",
+            "#projects",
+            "#experience",
+            "#education",
+            "#contact",
+          ].map(href => (
             <a
               key={href}
               href={href}
-              onClick={(e) => { e.preventDefault(); handleNav(href); }}
+              onClick={e => {
+                e.preventDefault();
+                handleNav(href);
+              }}
               className="text-xs text-[#4A5568] hover:text-[#0ABFBC] transition-colors duration-200"
               style={{ fontFamily: "'DM Sans', sans-serif" }}
             >
